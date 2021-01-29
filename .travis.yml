@@ -9,3 +9,12 @@ install: dotnet restore
 before_script: dotnet test
 
 script: dotnet build DvBCrud.MongoDB/DvBCrud.MongoDB.csproj
+
+before_deploy: dotnet pack -c Release -p:PackageVersion=$TRAVIS_TAG DvBCrud.MongoDB/DvBCrud.MongoDB.csproj
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: dotnet nuget push DvBCrud.MongoDB/bin/Release/DvBCrud.MongoDB.*.nupkg --api-key $NUGET_API_KEY --source $NUGET_SOURCE
+  on:
+    tags: true
