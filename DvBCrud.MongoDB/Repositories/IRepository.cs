@@ -4,11 +4,11 @@ namespace DvBCrud.MongoDB.Repositories
 {
     public interface IRepository<TModel>
     {
-        IEnumerable<TModel> Get();
+        IEnumerable<TModel> Find();
 
-        TModel Get(string id);
+        TModel Find(string id);
 
-        TModel Create(TModel model);
+        void Create(TModel model);
 
         void Update(string id, TModel model);
 

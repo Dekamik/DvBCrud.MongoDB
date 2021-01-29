@@ -3,7 +3,6 @@ using DvBCrud.MongoDB.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 
 namespace DvBCrud.MongoDB.Repositories
@@ -23,29 +22,14 @@ namespace DvBCrud.MongoDB.Repositories
             collection = database.GetCollection<TModel>(options.Value.CollectionName);
         }
 
-        public TModel Create(TModel model)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<TModel> Find() => collection.Find(m => true).ToEnumerable();
 
-        public IEnumerable<TModel> Get()
-        {
-            throw new NotImplementedException();
-        }
+        public TModel Find(string id) => collection.Find(m => m.Id == id).FirstOrDefault();
 
-        public TModel Get(string id)
-        {
-            throw new NotImplementedException();
-        }
+        public void Create(TModel model) => collection.InsertOne(model);
 
-        public void Remove(string id)
-        {
-            throw new NotImplementedException();
-        }
+        public void Update(string id, TModel model) => collection.ReplaceOne(m => m.Id == id, model);
 
-        public void Update(string id, TModel model)
-        {
-            throw new NotImplementedException();
-        }
+        public void Remove(string id) => collection.DeleteOne(m => m.Id == id);
     }
 }
