@@ -55,5 +55,59 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             // Assert
             A.CallTo(() => collection.InsertOne(model, null, default)).MustHaveHappenedOnceExactly();
         }
+
+        [Fact]
+        public void Create_Multiple_InsertManyCalled()
+        {
+            // Arrange
+            var models = new[]
+            {
+                new AnyModel
+                {
+                    AnyString = "AnyString"
+                }
+            };
+
+            // Act
+            repository.Create(models);
+
+            // Assert
+            A.CallTo(() => collection.InsertMany(models, null, default)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void CreateAsync_Any_InsertOneCalled()
+        {
+            // Arrange
+            var model = new AnyModel
+            {
+                AnyString = "AnyString"
+            };
+
+            // Act
+            repository.CreateAsync(model);
+
+            // Assert
+            A.CallTo(() => collection.InsertOneAsync(model, null, default)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void CreateAsync_Multiple_InsertManyCalled()
+        {
+            // Arrange
+            var models = new[]
+            {
+                new AnyModel
+                {
+                    AnyString = "AnyString"
+                }
+            };
+
+            // Act
+            repository.CreateAsync(models);
+
+            // Assert
+            A.CallTo(() => collection.InsertManyAsync(models, null, default)).MustHaveHappenedOnceExactly();
+        }
     }
 }
