@@ -33,7 +33,7 @@ namespace DvBCrud.MongoDB.Repositories
         {
             var cursor = await collection.FindAsync(m => m.Id == id);
             return await cursor.FirstOrDefaultAsync();
-        } 
+        }
 
         public void Create(TModel model) => collection.InsertOne(model);
 
