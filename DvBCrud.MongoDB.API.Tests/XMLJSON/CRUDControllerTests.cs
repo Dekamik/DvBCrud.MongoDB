@@ -124,7 +124,6 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             result.StatusCode.Should().Be(403);
         }
 
-
         [Fact]
         public void Create_AnyModel_ModelCreated()
         {
@@ -144,15 +143,50 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             A.CallTo(() => repository.Create(model)).MustHaveHappenedOnceExactly();
         }
 
-
         [Fact]
         public void Create_CreateForbidden_ReturnsForbidden()
         {
             // Arrange
             var readOnlyController = new AnyReadOnlyController(repository, logger);
 
+            // Act
             var result = readOnlyController.Create(new AnyModel()) as ObjectResult;
 
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(403);
+        }
+
+        [Fact]
+        public void Update_AnyModel_ModelUpdated()
+        {
+            // Arrange
+            string id = ObjectId.GenerateNewId().ToString();
+            var model = new AnyModel
+            {
+                Id = id,
+                AnyString = "AnyString"
+            };
+
+            // Act
+            var result = controller.Update(id, model) as OkResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            A.CallTo(() => repository.Update(id, model)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void Update_UpdateForbidden_ReturnsForbidden()
+        {
+            // Arrange
+            var readOnlyController = new AnyReadOnlyController(repository, logger);
+
+            // Act
+            var result = readOnlyController.Update("AnyId", new AnyModel()) as ObjectResult;
+
+            // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
         }

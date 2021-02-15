@@ -74,6 +74,18 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return Ok(entities);
         }
 
+        public IActionResult Update([FromQuery] string id, [FromBody] TEntity entity)
+        {
+            if (!IsActionAllowed(CRUDAction.Update))
+            {
+                return Forbidden();
+            }
+
+            repository.Update(id, entity);
+
+            return Ok();
+        }
+
         protected ObjectResult Forbidden() => StatusCode(403, $"Action forbidden on {nameof(TEntity)}");
     }
 }
