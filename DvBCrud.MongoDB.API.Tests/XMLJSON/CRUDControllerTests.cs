@@ -6,6 +6,8 @@ using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
+using System.Collections.Generic;
 using Xunit;
 
 namespace DvBCrud.MongoDB.API.Tests.XMLJSON
@@ -48,7 +50,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
         public void Read_AnyId_ReturnsModel()
         {
             // Arrange
-            var id = "AnyId";
+            string id = ObjectId.GenerateNewId().ToString();
             var expected = new AnyModel
             {
                 Id = id,
@@ -66,7 +68,6 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             actual.Should().Be(expected);
         }
 
-
         [Fact]
         public void Read_ReadForbidden_ReturnsForbidden()
         {
@@ -75,6 +76,48 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
 
             // Act
             var result = restrictedController.Read("AnyId").Result as ObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(403);
+        }
+
+        [Fact]
+        public void ReadAll_Any_ReturnsAllModels()
+        {
+            // Arrange
+            var expected = new[]
+            {
+                new AnyModel
+                {
+                    Id = ObjectId.GenerateNewId().ToString(),
+                    AnyString = "AnyString"
+                },
+                new AnyModel
+                {
+                    Id = ObjectId.GenerateNewId().ToString(),
+                    AnyString = "AnyString"
+                }
+            };
+            A.CallTo(() => repository.Find()).Returns(expected);
+
+            // Act
+            var result = controller.ReadAll().Result as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().Be(expected);
+        }
+
+        [Fact]
+        public void ReadAll_ReadForbidden_ReturnsForbidden()
+        {
+            // Arrange
+            var restrictedController = new AnyTestController(repository, logger, CRUDAction.Create, CRUDAction.Update, CRUDAction.Delete);
+
+            // Act
+            var result = restrictedController.ReadAll().Result as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();

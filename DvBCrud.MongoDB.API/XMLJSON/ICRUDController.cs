@@ -1,5 +1,6 @@
 ﻿using DvBCrud.MongoDB.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace DvBCrud.MongoDB.API.XMLJSON
 {
@@ -9,5 +10,7 @@ namespace DvBCrud.MongoDB.API.XMLJSON
         bool IsActionAllowed(CRUDAction action);
 
         ActionResult<TEntity> Read(string id);
+
+        ActionResult<IEnumerable<TEntity>> ReadAll();
     }
 }

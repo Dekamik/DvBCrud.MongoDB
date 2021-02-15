@@ -44,12 +44,27 @@ namespace DvBCrud.MongoDB.API.XMLJSON
         {
             if (!IsActionAllowed(CRUDAction.Read))
             {
-                return StatusCode(403, $"{nameof(Read)} access denied on {nameof(TEntity)}");
+                return Forbidden();
             }
 
             TEntity entity = repository.Find(id);
 
             return Ok(entity);
         }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<TEntity>> ReadAll()
+        {
+            if (!IsActionAllowed(CRUDAction.Read))
+            {
+                return Forbidden();
+            }
+
+            IEnumerable<TEntity> entities = repository.Find();
+
+            return Ok(entities);
+        }
+
+        protected ObjectResult Forbidden() => StatusCode(403, $"Action forbidden on {nameof(TEntity)}");
     }
 }
