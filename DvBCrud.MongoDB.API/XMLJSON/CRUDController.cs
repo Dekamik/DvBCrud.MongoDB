@@ -50,7 +50,7 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return Ok();
         }
 
-        public ActionResult<TEntity> Read(string id)
+        public ActionResult<TEntity> Read([FromQuery] string id)
         {
             if (!IsActionAllowed(CRUDAction.Read))
             {
@@ -82,6 +82,18 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             }
 
             repository.Update(id, entity);
+
+            return Ok();
+        }
+
+        public IActionResult Delete([FromQuery] string id)
+        {
+            if (!IsActionAllowed(CRUDAction.Delete))
+            {
+                return Forbidden();
+            }
+
+            repository.Remove(id);
 
             return Ok();
         }

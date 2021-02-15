@@ -13,12 +13,15 @@ namespace DvBCrud.MongoDB.API.XMLJSON
         IActionResult Create([FromBody] TEntity entity);
 
         [HttpGet, Route("{id}")]
-        ActionResult<TEntity> Read(string id);
+        ActionResult<TEntity> Read([FromQuery] string id);
 
         [HttpGet]
         ActionResult<IEnumerable<TEntity>> ReadAll();
 
         [HttpPut, Route("{id}")]
         IActionResult Update([FromQuery] string id, [FromBody] TEntity entity);
+
+        [HttpDelete, Route("{id}")]
+        IActionResult Delete([FromQuery] string id);
     }
 }

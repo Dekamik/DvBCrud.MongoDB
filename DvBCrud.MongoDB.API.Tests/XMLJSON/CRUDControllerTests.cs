@@ -73,13 +73,15 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
         {
             // Arrange
             var restrictedController = new AnyTestController(repository, logger, CRUDAction.Create, CRUDAction.Update, CRUDAction.Delete);
+            string id = "AnyId";
 
             // Act
-            var result = restrictedController.Read("AnyId").Result as ObjectResult;
+            var result = restrictedController.Read(id).Result as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
+            A.CallTo(() => repository.Find(id)).MustNotHaveHappened();
         }
 
         [Fact]
@@ -122,6 +124,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
+            A.CallTo(() => repository.Find()).MustNotHaveHappened();
         }
 
         [Fact]
@@ -148,6 +151,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
         {
             // Arrange
             var readOnlyController = new AnyReadOnlyController(repository, logger);
+            var model = new AnyModel();
 
             // Act
             var result = readOnlyController.Create(new AnyModel()) as ObjectResult;
@@ -155,6 +159,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
+            A.CallTo(() => repository.Create(model)).MustNotHaveHappened();
         }
 
         [Fact]
@@ -182,13 +187,49 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
         {
             // Arrange
             var readOnlyController = new AnyReadOnlyController(repository, logger);
+            string id = ObjectId.GenerateNewId().ToString();
+            var model = new AnyModel();
 
             // Act
-            var result = readOnlyController.Update("AnyId", new AnyModel()) as ObjectResult;
+            var result = readOnlyController.Update(id, model) as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
+            A.CallTo(() => repository.Update(id, model)).MustNotHaveHappened();
+        }
+
+
+        [Fact]
+        public void Delete_AnyValidId_ModelDeleted()
+        {
+            // Arrange
+            string id = ObjectId.GenerateNewId().ToString();
+
+            // Act
+            var result = controller.Delete(id) as OkResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            A.CallTo(() => repository.Remove(id)).MustHaveHappenedOnceExactly();
+        }
+
+
+        [Fact]
+        public void Delete_DeleteForbidden_ReturnsForbidden()
+        {
+            // Arrange
+            var readOnlyController = new AnyReadOnlyController(repository, logger);
+            string id = ObjectId.GenerateNewId().ToString();
+
+            // Act
+            var result = readOnlyController.Delete(id) as ObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(403);
+            A.CallTo(() => repository.Remove(id)).MustNotHaveHappened();
         }
     }
 }
