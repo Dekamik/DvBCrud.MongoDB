@@ -9,8 +9,13 @@ namespace DvBCrud.MongoDB.API.XMLJSON
     {
         bool IsActionAllowed(CRUDAction action);
 
+        [HttpGet, Route("{id}")]
         ActionResult<TEntity> Read(string id);
 
+        [HttpGet]
         ActionResult<IEnumerable<TEntity>> ReadAll();
+
+        [HttpPost]
+        IActionResult Create([FromBody] TEntity entity);
     }
 }

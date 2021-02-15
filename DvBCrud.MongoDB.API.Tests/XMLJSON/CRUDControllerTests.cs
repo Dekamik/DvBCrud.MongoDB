@@ -123,5 +123,38 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
         }
+
+
+        [Fact]
+        public void Create_AnyModel_ModelCreated()
+        {
+            // Arrange
+            var model = new AnyModel
+            {
+                Id = ObjectId.GenerateNewId().ToString(),
+                AnyString = "AnyString"
+            };
+
+            // Act
+            var result = controller.Create(model) as OkResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            A.CallTo(() => repository.Create(model)).MustHaveHappenedOnceExactly();
+        }
+
+
+        [Fact]
+        public void Create_CreateForbidden_ReturnsForbidden()
+        {
+            // Arrange
+            var readOnlyController = new AnyReadOnlyController(repository, logger);
+
+            var result = readOnlyController.Create(new AnyModel()) as ObjectResult;
+
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(403);
+        }
     }
 }

@@ -19,7 +19,6 @@ namespace DvBCrud.MongoDB.API.XMLJSON
         {
             this.repository = repository;
             this.logger = logger;
-            allowedActions = null;
         }
 
         public CRUDController(TRepository repository, ILogger logger, params CRUDAction[] allowedActions)
@@ -39,7 +38,18 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return allowedActions.Contains(action);
         }
 
-        [HttpGet, Route("{id}")]
+        public IActionResult Create([FromBody] TEntity entity)
+        {
+            if (!IsActionAllowed(CRUDAction.Create))
+            {
+                return Forbidden();
+            }
+
+            repository.Create(entity);
+
+            return Ok();
+        }
+
         public ActionResult<TEntity> Read(string id)
         {
             if (!IsActionAllowed(CRUDAction.Read))
@@ -52,7 +62,6 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return Ok(entity);
         }
 
-        [HttpGet]
         public ActionResult<IEnumerable<TEntity>> ReadAll()
         {
             if (!IsActionAllowed(CRUDAction.Read))
