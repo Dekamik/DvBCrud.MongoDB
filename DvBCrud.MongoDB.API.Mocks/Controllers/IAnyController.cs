@@ -5,6 +5,6 @@ namespace DvBCrud.MongoDB.API.Mocks.Controllers
 {
     public interface IAnyController : ICRUDController<AnyModel>
     {
-        
+
     }
 }

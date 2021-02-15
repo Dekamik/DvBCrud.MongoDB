@@ -6,5 +6,7 @@ namespace DvBCrud.MongoDB.API.XMLJSON
         where TEntity : BaseModel
     {
         bool IsActionAllowed(CRUDAction action);
+
+        TEntity Read(string id);
     }
 }

@@ -30,7 +30,12 @@ namespace DvBCrud.MongoDB.API.XMLJSON
 
         public bool IsActionAllowed(CRUDAction action)
         {
-            throw new System.NotImplementedException();
+            return true;
+        }
+
+        public TEntity Read(string id)
+        {
+            return repository.Find(id);
         }
     }
 }

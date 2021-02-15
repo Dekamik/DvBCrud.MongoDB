@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DvBCrud.MongoDB.API\DvBCrud.MongoDB.API.csproj" />
+    <ProjectReference Include="..\DvBCrud.MongoDB.Mocks\DvBCrud.MongoDB.Mocks.csproj" />
   </ItemGroup>
 
 </Project>
