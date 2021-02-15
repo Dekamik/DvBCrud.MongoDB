@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DvBCrud.MongoDB.Repositories
@@ -25,7 +26,10 @@ namespace DvBCrud.MongoDB.Repositories
 
         public IEnumerable<TModel> Find() => collection.Find(m => true).ToEnumerable();
 
-        public TModel Find(string id) => collection.Find(m => m.Id == id).FirstOrDefault();
+        public TModel Find(string id) 
+        {
+            return collection.FindSync(m => m.Id == id).Current.FirstOrDefault();
+        }
 
         public async Task<IEnumerable<TModel>> FindAsync() => (await collection.FindAsync(m => true)).ToEnumerable();
 

@@ -1,4 +1,5 @@
 ﻿using DvBCrud.MongoDB.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DvBCrud.MongoDB.API.XMLJSON
 {
@@ -7,6 +8,6 @@ namespace DvBCrud.MongoDB.API.XMLJSON
     {
         bool IsActionAllowed(CRUDAction action);
 
-        TEntity Read(string id);
+        ActionResult<TEntity> Read(string id);
     }
 }

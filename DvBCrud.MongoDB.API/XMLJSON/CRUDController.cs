@@ -3,6 +3,7 @@ using DvBCrud.MongoDB.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DvBCrud.MongoDB.API.XMLJSON
 {
@@ -30,12 +31,25 @@ namespace DvBCrud.MongoDB.API.XMLJSON
 
         public bool IsActionAllowed(CRUDAction action)
         {
-            return true;
+            if (allowedActions == null)
+            {
+                return true;
+            }
+
+            return allowedActions.Contains(action);
         }
 
-        public TEntity Read(string id)
+        [HttpGet, Route("{id}")]
+        public ActionResult<TEntity> Read(string id)
         {
-            return repository.Find(id);
+            if (!IsActionAllowed(CRUDAction.Read))
+            {
+                return StatusCode(403, $"{nameof(Read)} access denied on {nameof(TEntity)}");
+            }
+
+            TEntity entity = repository.Find(id);
+
+            return Ok(entity);
         }
     }
 }
