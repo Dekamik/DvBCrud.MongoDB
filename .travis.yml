@@ -8,13 +8,11 @@ install: dotnet restore
 
 before_script: dotnet test
 
-script: dotnet build DvBCrud.MongoDB/DvBCrud.MongoDB.csproj
-
-before_deploy: dotnet pack -c Release -p:PackageVersion=${TRAVIS_TAG} DvBCrud.MongoDB/DvBCrud.MongoDB.csproj
+script: dotnet build DvBCrud.MongoDB.API/DvBCrud.MongoDB.API.csproj # Builds DvBCrud.MongoDB aswell (as a dependency)
 
 deploy:
   skip_cleanup: true
   provider: script
-  script: dotnet nuget push DvBCrud.MongoDB/bin/Release/DvBCrud.MongoDB.${TRAVIS_TAG}.nupkg --api-key ${NUGET_API_KEY} --source ${NUGET_SOURCE}
+  script: chmod +x ./deploy.sh && ./deploy.sh ${TRAVIS_TAG} ${NUGET_API_KEY} ${NUGET_SOURCE}
   on:
     tags: true
