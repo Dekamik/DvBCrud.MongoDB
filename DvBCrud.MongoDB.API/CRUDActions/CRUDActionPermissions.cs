@@ -17,14 +17,6 @@ namespace DvBCrud.MongoDB.API.CRUDActions
             this.allowedActions = allowedActions;
         }
 
-        public bool IsActionAllowed(CRUDAction action)
-        {
-            if (allowedActions == null)
-            {
-                return true;
-            }
-
-            return allowedActions.Contains(action);
-        }
+        public bool IsActionAllowed(CRUDAction action) => allowedActions?.Contains(action) ?? true;
     }
 }
