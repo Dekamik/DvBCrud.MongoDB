@@ -133,7 +133,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             var model = new AnyModel();
 
             // Act
-            var result = readOnlyController.Create(new AnyModel()) as ObjectResult;
+            var result = readOnlyController.Create(model) as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();
@@ -177,7 +177,6 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             result.StatusCode.Should().Be(403);
             A.CallTo(() => repository.Update(id, model)).MustNotHaveHappened();
         }
-
 
         [Fact]
         public void Delete_AnyValidId_ModelDeleted()
