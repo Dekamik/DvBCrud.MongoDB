@@ -7,7 +7,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
-using System.Collections.Generic;
 using Xunit;
 
 namespace DvBCrud.MongoDB.API.Tests.XMLJSON
