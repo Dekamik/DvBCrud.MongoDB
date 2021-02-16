@@ -1,4 +1,4 @@
-﻿namespace DvBCrud.MongoDB.API.XMLJSON
+﻿namespace DvBCrud.MongoDB.API.CRUDActions
 {
     public enum CRUDAction
     {
