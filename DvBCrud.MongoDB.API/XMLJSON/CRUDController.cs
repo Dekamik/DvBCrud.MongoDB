@@ -1,4 +1,4 @@
-﻿using DvBCrud.MongoDB.API.Actions;
+﻿using DvBCrud.MongoDB.API.CRUDActions;
 using DvBCrud.MongoDB.Models;
 using DvBCrud.MongoDB.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -13,20 +13,20 @@ namespace DvBCrud.MongoDB.API.XMLJSON
     {
         protected readonly TRepository repository;
         protected readonly ILogger logger;
-        protected readonly ActionRestrictions crudActions;
+        protected readonly CRUDActionPermissions crudActions;
 
         public CRUDController(TRepository repository, ILogger logger)
         {
             this.repository = repository;
             this.logger = logger;
-            this.crudActions = new ActionRestrictions();
+            this.crudActions = new CRUDActionPermissions();
         }
 
         public CRUDController(TRepository repository, ILogger logger, params CRUDAction[] allowedActions)
         {
             this.repository = repository;
             this.logger = logger;
-            this.crudActions = new ActionRestrictions(allowedActions);
+            this.crudActions = new CRUDActionPermissions(allowedActions);
         }
 
         public IActionResult Create([FromBody] TModel data)

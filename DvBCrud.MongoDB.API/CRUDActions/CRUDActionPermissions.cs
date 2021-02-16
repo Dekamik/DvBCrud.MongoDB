@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DvBCrud.MongoDB.API.Actions
+namespace DvBCrud.MongoDB.API.CRUDActions
 {
-    public class ActionRestrictions
+    public class CRUDActionPermissions
     {
         private readonly IEnumerable<CRUDAction> allowedActions;
 
-        public ActionRestrictions()
+        public CRUDActionPermissions()
         {
 
         }
 
-        public ActionRestrictions(params CRUDAction[] allowedActions)
+        public CRUDActionPermissions(params CRUDAction[] allowedActions)
         {
             this.allowedActions = allowedActions;
         }
