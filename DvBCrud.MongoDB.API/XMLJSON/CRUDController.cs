@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace DvBCrud.MongoDB.API.XMLJSON
 {
-    public abstract class CRUDController<TEntity, TRepository> : ControllerBase, ICRUDController<TEntity>
-        where TEntity : BaseModel
-        where TRepository : IRepository<TEntity>
+    public abstract class CRUDController<TModel, TRepository> : ControllerBase, ICRUDController<TModel>
+        where TModel : BaseModel
+        where TRepository : IRepository<TModel>
     {
         protected readonly TRepository repository;
         protected readonly ILogger logger;
@@ -38,50 +38,50 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return allowedActions.Contains(action);
         }
 
-        public IActionResult Create([FromBody] TEntity entity)
+        public IActionResult Create([FromBody] TModel data)
         {
             if (!IsActionAllowed(CRUDAction.Create))
             {
                 return Forbidden();
             }
 
-            repository.Create(entity);
+            repository.Create(data);
 
             return Ok();
         }
 
-        public ActionResult<TEntity> Read([FromQuery] string id)
+        public ActionResult<TModel> Read([FromQuery] string id)
         {
             if (!IsActionAllowed(CRUDAction.Read))
             {
                 return Forbidden();
             }
 
-            TEntity entity = repository.Find(id);
+            TModel entity = repository.Find(id);
 
             return Ok(entity);
         }
 
-        public ActionResult<IEnumerable<TEntity>> ReadAll()
+        public ActionResult<IEnumerable<TModel>> ReadAll()
         {
             if (!IsActionAllowed(CRUDAction.Read))
             {
                 return Forbidden();
             }
 
-            IEnumerable<TEntity> entities = repository.Find();
+            IEnumerable<TModel> entities = repository.Find();
 
             return Ok(entities);
         }
 
-        public IActionResult Update([FromQuery] string id, [FromBody] TEntity entity)
+        public IActionResult Update([FromQuery] string id, [FromBody] TModel data)
         {
             if (!IsActionAllowed(CRUDAction.Update))
             {
                 return Forbidden();
             }
 
-            repository.Update(id, entity);
+            repository.Update(id, data);
 
             return Ok();
         }
@@ -98,6 +98,6 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return Ok();
         }
 
-        protected ObjectResult Forbidden() => StatusCode(403, $"Action forbidden on {nameof(TEntity)}");
+        protected ObjectResult Forbidden() => StatusCode(403, $"Action forbidden on {nameof(TModel)}");
     }
 }

@@ -26,10 +26,7 @@ namespace DvBCrud.MongoDB.Repositories
 
         public IEnumerable<TModel> Find() => collection.Find(m => true).ToEnumerable();
 
-        public TModel Find(string id) 
-        {
-            return collection.FindSync(m => m.Id == id).Current.FirstOrDefault();
-        }
+        public TModel Find(string id) => collection.Find(m => m.Id == id).FirstOrDefault();
 
         public async Task<IEnumerable<TModel>> FindAsync() => (await collection.FindAsync(m => true)).ToEnumerable();
 
@@ -39,20 +36,20 @@ namespace DvBCrud.MongoDB.Repositories
             return await cursor.FirstOrDefaultAsync();
         }
 
-        public void Create(TModel model) => collection.InsertOne(model);
+        public void Create(TModel data) => collection.InsertOne(data);
 
-        public void Create(IEnumerable<TModel> model) => collection.InsertMany(model);
+        public void Create(IEnumerable<TModel> data) => collection.InsertMany(data);
 
-        public Task CreateAsync(TModel model) => collection.InsertOneAsync(model);
+        public Task CreateAsync(TModel data) => collection.InsertOneAsync(data);
 
-        public Task CreateAsync(IEnumerable<TModel> model) => collection.InsertManyAsync(model);
+        public Task CreateAsync(IEnumerable<TModel> data) => collection.InsertManyAsync(data);
 
-        public void Update(string id, TModel model) => collection.ReplaceOne(m => m.Id == id, model);
+        public void Update(string id, TModel data) => collection.ReplaceOne(d => d.Id == id, data);
 
-        public Task UpdateAsync(string id, TModel model) => collection.ReplaceOneAsync(m => m.Id == id, model);
+        public Task UpdateAsync(string id, TModel data) => collection.ReplaceOneAsync(d => d.Id == id, data);
 
-        public void Remove(string id) => collection.DeleteOne(m => m.Id == id);
+        public void Remove(string id) => collection.DeleteOne(d => d.Id == id);
 
-        public Task RemoveAsync(string id) => collection.DeleteOneAsync(m => m.Id == id);
+        public Task RemoveAsync(string id) => collection.DeleteOneAsync(d => d.Id == id);
     }
 }

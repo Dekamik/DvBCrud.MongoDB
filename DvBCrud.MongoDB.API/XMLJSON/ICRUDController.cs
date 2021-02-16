@@ -4,22 +4,22 @@ using System.Collections.Generic;
 
 namespace DvBCrud.MongoDB.API.XMLJSON
 {
-    public interface ICRUDController<TEntity>
-        where TEntity : BaseModel
+    public interface ICRUDController<TModel>
+        where TModel : BaseModel
     {
         bool IsActionAllowed(CRUDAction action);
 
         [HttpPost]
-        IActionResult Create([FromBody] TEntity entity);
+        IActionResult Create([FromBody] TModel data);
 
         [HttpGet, Route("{id}")]
-        ActionResult<TEntity> Read([FromQuery] string id);
+        ActionResult<TModel> Read([FromQuery] string id);
 
         [HttpGet]
-        ActionResult<IEnumerable<TEntity>> ReadAll();
+        ActionResult<IEnumerable<TModel>> ReadAll();
 
         [HttpPut, Route("{id}")]
-        IActionResult Update([FromQuery] string id, [FromBody] TEntity entity);
+        IActionResult Update([FromQuery] string id, [FromBody] TModel data);
 
         [HttpDelete, Route("{id}")]
         IActionResult Delete([FromQuery] string id);

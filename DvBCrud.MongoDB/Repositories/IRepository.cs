@@ -13,17 +13,17 @@ namespace DvBCrud.MongoDB.Repositories
 
         Task<TModel> FindAsync(string id);
 
-        void Create(TModel model);
+        void Create(TModel data);
 
-        void Create(IEnumerable<TModel> models);
+        void Create(IEnumerable<TModel> data);
 
-        Task CreateAsync(TModel model);
+        Task CreateAsync(TModel data);
 
-        Task CreateAsync(IEnumerable<TModel> models);
+        Task CreateAsync(IEnumerable<TModel> data);
 
-        void Update(string id, TModel model);
+        void Update(string id, TModel data);
 
-        Task UpdateAsync(string id, TModel model);
+        Task UpdateAsync(string id, TModel data);
 
         void Remove(string id);
 
