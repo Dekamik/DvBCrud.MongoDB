@@ -25,27 +25,6 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             controller = new AnyController(repository, logger);
         }
 
-
-        [Fact]
-        public void IsActionAllowed_AllowedActionsNotDefined_AllActionsAllowed()
-        {
-            controller.IsActionAllowed(CRUDAction.Create).Should().BeTrue();
-            controller.IsActionAllowed(CRUDAction.Read).Should().BeTrue();
-            controller.IsActionAllowed(CRUDAction.Update).Should().BeTrue();
-            controller.IsActionAllowed(CRUDAction.Delete).Should().BeTrue();
-        }
-
-
-        [Fact]
-        public void IsActionAllowed_AnyReadOnlyController_OnlyReadAllowed()
-        {
-            var readOnlyController = new AnyReadOnlyController(repository, logger);
-            readOnlyController.IsActionAllowed(CRUDAction.Create).Should().BeFalse();
-            readOnlyController.IsActionAllowed(CRUDAction.Read).Should().BeTrue();
-            readOnlyController.IsActionAllowed(CRUDAction.Update).Should().BeFalse();
-            readOnlyController.IsActionAllowed(CRUDAction.Delete).Should().BeFalse();
-        }
-
         [Fact]
         public void Read_AnyId_ReturnsModel()
         {

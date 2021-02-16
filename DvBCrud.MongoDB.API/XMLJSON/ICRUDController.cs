@@ -7,8 +7,6 @@ namespace DvBCrud.MongoDB.API.XMLJSON
     public interface ICRUDController<TModel>
         where TModel : BaseModel
     {
-        bool IsActionAllowed(CRUDAction action);
-
         [HttpPost]
         IActionResult Create([FromBody] TModel data);
 
