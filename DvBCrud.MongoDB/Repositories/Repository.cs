@@ -1,4 +1,5 @@
 ﻿using DvBCrud.MongoDB.Models;
+using DvBCrud.MongoDB.Repositories.Proxies;
 using DvBCrud.MongoDB.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -12,44 +13,42 @@ namespace DvBCrud.MongoDB.Repositories
     public abstract class Repository<TModel> : IRepository<TModel>
         where TModel : BaseModel
     {
-        protected readonly IMongoCollection<TModel> collection;
+        protected readonly IMongoCollectionProxy<TModel> collectionProxy;
 
         protected readonly ILogger logger;
 
-        public Repository(IMongoClient client, ILogger logger, IOptions<MongoSettings> options)
+        public Repository(IMongoCollectionProxy<TModel> collectionProxy, ILogger logger, IOptions<MongoSettings> options)
         {
             this.logger = logger;
-
-            var database = client.GetDatabase(options.Value.DatabaseName);
-            collection = database.GetCollection<TModel>(options.Value.CollectionName);
+            this.collectionProxy = collectionProxy;
         }
 
-        public IEnumerable<TModel> Find() => collection.Find(m => true).ToEnumerable();
+        public IEnumerable<TModel> Find() => collectionProxy.Find(m => true).ToEnumerable();
 
-        public TModel Find(string id) => collection.Find(m => m.Id == id).FirstOrDefault();
+        public TModel Find(string id) => collectionProxy.Find(m => m.Id == id).FirstOrDefault();
 
-        public async Task<IEnumerable<TModel>> FindAsync() => (await collection.FindAsync(m => true)).ToEnumerable();
+        public async Task<IEnumerable<TModel>> FindAsync() => (await collectionProxy.FindAsync(m => true)).ToEnumerable();
 
         public async Task<TModel> FindAsync(string id)
         {
-            var cursor = await collection.FindAsync(m => m.Id == id);
+            var cursor = await collectionProxy.FindAsync(m => m.Id == id);
             return await cursor.FirstOrDefaultAsync();
         }
 
-        public void Create(TModel data) => collection.InsertOne(data);
+        public void Create(TModel data) => collectionProxy.InsertOne(data);
 
-        public void Create(IEnumerable<TModel> data) => collection.InsertMany(data);
+        public void Create(IEnumerable<TModel> data) => collectionProxy.InsertMany(data);
 
-        public Task CreateAsync(TModel data) => collection.InsertOneAsync(data);
+        public Task CreateAsync(TModel data) => collectionProxy.InsertOneAsync(data);
 
-        public Task CreateAsync(IEnumerable<TModel> data) => collection.InsertManyAsync(data);
+        public Task CreateAsync(IEnumerable<TModel> data) => collectionProxy.InsertManyAsync(data);
 
-        public void Update(string id, TModel data) => collection.ReplaceOne(d => d.Id == id, data);
+        public void Update(string id, TModel data) => collectionProxy.ReplaceOne(d => d.Id == id, data);
 
-        public Task UpdateAsync(string id, TModel data) => collection.ReplaceOneAsync(d => d.Id == id, data);
+        public Task UpdateAsync(string id, TModel data) => collectionProxy.ReplaceOneAsync(d => d.Id == id, data);
 
-        public void Remove(string id) => collection.DeleteOne(d => d.Id == id);
+        public void Remove(string id) => collectionProxy.DeleteOne(d => d.Id == id);
 
-        public Task RemoveAsync(string id) => collection.DeleteOneAsync(d => d.Id == id);
+        public Task RemoveAsync(string id) => collectionProxy.DeleteOneAsync(d => d.Id == id);
     }
 }

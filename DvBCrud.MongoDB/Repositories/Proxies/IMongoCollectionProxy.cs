@@ -25,8 +25,8 @@ namespace DvBCrud.MongoDB.Repositories.Proxies
 
         Task<ReplaceOneResult> ReplaceOneAsync(Expression<Func<TModel, bool>> filter, TModel replacement, ReplaceOptions options = null, CancellationToken cancellationToken = default);
 
-        DeleteResult DeleteOne(Expression<Func<TModel, bool>> filter, DeleteOptions options, CancellationToken cancellationToken = default);
+        DeleteResult DeleteOne(Expression<Func<TModel, bool>> filter, DeleteOptions options = null, CancellationToken cancellationToken = default);
 
-        Task<DeleteResult> DeleteOneAsync(Expression<Func<TModel, bool>> filter, DeleteOptions options, CancellationToken cancellationToken = default);
+        Task<DeleteResult> DeleteOneAsync(Expression<Func<TModel, bool>> filter, DeleteOptions options = null, CancellationToken cancellationToken = default);
     }
 }
