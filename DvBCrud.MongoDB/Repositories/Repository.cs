@@ -12,7 +12,7 @@ namespace DvBCrud.MongoDB.Repositories
     public abstract class Repository<TModel> : IRepository<TModel>
         where TModel : BaseModel
     {
-        protected readonly IMongoCollection<TModel> collection;
+        protected readonly IMongoCollectionProxy<TModel> collection;
 
         protected readonly ILogger logger;
 
@@ -21,7 +21,7 @@ namespace DvBCrud.MongoDB.Repositories
             this.logger = logger;
 
             var database = client.GetDatabase(options.Value.DatabaseName);
-            collection = database.GetCollection<TModel>(options.Value.CollectionName);
+            collection = (IMongoCollectionProxy<TModel>)database.GetCollection<TModel>(options.Value.CollectionName);
         }
 
         public IEnumerable<TModel> Find() => collection.Find(m => true).ToEnumerable();

@@ -1,18 +1,22 @@
-﻿using DvBCrud.MongoDB.Mocks;
-using DvBCrud.MongoDB.Mocks.Models;
+﻿using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;
+using DvBCrud.MongoDB.Repositories;
 using DvBCrud.MongoDB.Settings;
 using FakeItEasy;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DvBCrud.MongoDB.Tests.Repositories
 {
     public class RepositoryTests
     {
-        private readonly IMongoCollection<AnyModel> collection;
+        private readonly IMongoCollectionProxy<AnyModel> collection;
         private readonly IMongoDatabase database;
         private readonly IMongoClient client;
         private readonly ILogger logger;
@@ -37,6 +41,42 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             A.CallTo(() => options.Value).Returns(mongoSettings);
 
             repository = new AnyRepository(client, logger, options);
+        }
+
+        [Fact]
+        public void Find_NoArgument_FindCalled()
+        {
+            repository.Find();
+
+            A.CallTo(() => collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void Find_WithId_FindCalled()
+        {
+            string id = "AnyId";
+
+            repository.Find(id);
+
+            A.CallTo(() => collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task FindAsync_NoArgument_FindAsyncCalled()
+        {
+            await repository.FindAsync();
+
+            A.CallTo(() => collection.FindAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task FindAsync_WithId_FindAsyncCalled()
+        {
+            string id = "AnyId";
+
+            await repository.FindAsync(id);
+
+            A.CallTo(() => collection.FindAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -107,6 +147,55 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
             // Assert
             A.CallTo(() => collection.InsertManyAsync(models, null, default)).MustHaveHappenedOnceExactly();
+        }
+
+
+        [Fact]
+        public void Update_Any_ReplaceOneCalled()
+        {
+            string id = "AnyId";
+            var model = new AnyModel
+            {
+                AnyString = "AnyString"
+            };
+
+            repository.Update(id, model);
+
+            A.CallTo(() => collection.ReplaceOne(A<Expression<Func<AnyModel, bool>>>.Ignored, model)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void UpdateAsync_Any_ReplaceOneAsyncCalled()
+        {
+            string id = "AnyId";
+            var model = new AnyModel
+            {
+                AnyString = "AnyString"
+            };
+
+            repository.UpdateAsync(id, model);
+
+            A.CallTo(() => collection.ReplaceOneAsync(A<Expression<Func<AnyModel, bool>>>.Ignored, model)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void Remove_AnyId_DeleteOneCalled()
+        {
+            string id = "AnyId";
+
+            repository.Remove(id);
+
+            A.CallTo(() => collection.DeleteOne(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void RemoveAsync_AnyId_DeleteOneAsyncCalled()
+        {
+            string id = "AnyId";
+
+            repository.RemoveAsync(id);
+
+            A.CallTo(() => collection.DeleteOneAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
     }
 }
