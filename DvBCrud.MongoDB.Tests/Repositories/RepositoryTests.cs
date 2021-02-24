@@ -1,28 +1,42 @@
-﻿using DvBCrud.MongoDB.Mocks.Models;
+﻿using DvBCrud.MongoDB.Mocks;
+using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;
-using DvBCrud.MongoDB.Repositories.Proxies;
 using DvBCrud.MongoDB.Settings;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using Xunit;
 
 namespace DvBCrud.MongoDB.Tests.Repositories
 {
     public class RepositoryTests
     {
-        private readonly IMongoCollectionProxy<AnyModel> collectionProxy;
+        private readonly IMongoCollection<AnyModel> collection;
+        private readonly IMongoDatabase database;
+        private readonly IMongoClient client;
         private readonly ILogger logger;
         private readonly IOptions<MongoSettings> options;
         private readonly AnyRepository repository;
 
         public RepositoryTests()
         {
-            collectionProxy = A.Fake<IMongoCollectionProxy<AnyModel>>();
-            options = A.Fake<IOptions<MongoSettings>>();
+            var mongoSettings = new MongoSettings
+            {
+                DatabaseName = "AnyDb",
+                CollectionName = "AnyCollection"
+            };
+            collection = A.Fake<IMongoCollectionProxy<AnyModel>>();
+            database = A.Fake<IMongoDatabase>();
+            client = A.Fake<IMongoClient>();
             logger = A.Fake<ILogger>();
+            options = A.Fake<IOptions<MongoSettings>>();
 
-            repository = new AnyRepository(collectionProxy, logger, options);
+            A.CallTo(() => database.GetCollection<AnyModel>(mongoSettings.CollectionName, null)).Returns(collection);
+            A.CallTo(() => client.GetDatabase(mongoSettings.DatabaseName, null)).Returns(database);
+            A.CallTo(() => options.Value).Returns(mongoSettings);
+
+            repository = new AnyRepository(client, logger, options);
         }
 
         [Fact]
@@ -38,7 +52,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             repository.Create(model);
 
             // Assert
-            A.CallTo(() => collectionProxy.InsertOne(model, null, default)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => collection.InsertOne(model, null, default)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -57,7 +71,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             repository.Create(models);
 
             // Assert
-            A.CallTo(() => collectionProxy.InsertMany(models, null, default)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => collection.InsertMany(models, null, default)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -73,7 +87,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             repository.CreateAsync(model);
 
             // Assert
-            A.CallTo(() => collectionProxy.InsertOneAsync(model, null, default)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => collection.InsertOneAsync(model, null, default)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -92,7 +106,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             repository.CreateAsync(models);
 
             // Assert
-            A.CallTo(() => collectionProxy.InsertManyAsync(models, null, default)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => collection.InsertManyAsync(models, null, default)).MustHaveHappenedOnceExactly();
         }
     }
 }
