@@ -61,6 +61,13 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             A.CallTo(() => collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
+
+        [Fact]
+        public void Find_MissingId_ThrowsArgumentNullException()
+        {
+            repository.Invoking(r => r.Find(null)).Should().Throw<ArgumentNullException>();
+        }
+
         [Fact]
         public async Task FindAsync_NoArgument_FindAsyncCalled()
         {
@@ -77,6 +84,13 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             await repository.FindAsync(id);
 
             A.CallTo(() => collection.FindAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+
+        [Fact]
+        public void FindAsync_MissingId_ThrowsArgumentNullException()
+        {
+            repository.Awaiting(r => r.FindAsync(null)).Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -164,6 +178,13 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             A.CallTo(() => collection.ReplaceOne(A<Expression<Func<AnyModel, bool>>>.Ignored, model)).MustHaveHappenedOnceExactly();
         }
 
+
+        [Fact]
+        public void Update_MissingId_ThrowsArgumentNullException()
+        {
+            repository.Invoking(r => r.Update(null, new AnyModel())).Should().Throw<ArgumentNullException>();
+        }
+
         [Fact]
         public void UpdateAsync_Any_ReplaceOneAsyncCalled()
         {
@@ -179,6 +200,12 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         }
 
         [Fact]
+        public void UpdateAsync_MissingId_ThrowsArgumentNullException()
+        {
+            repository.Awaiting(r => r.UpdateAsync(null, new AnyModel())).Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
         public void Remove_AnyId_DeleteOneCalled()
         {
             string id = "AnyId";
@@ -186,6 +213,13 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             repository.Remove(id);
 
             A.CallTo(() => collection.DeleteOne(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+
+        [Fact]
+        public void Remove_MissingId_ThrowsArgumentNullException()
+        {
+            repository.Invoking(r => r.Remove(null)).Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -196,6 +230,12 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             repository.RemoveAsync(id);
 
             A.CallTo(() => collection.DeleteOneAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void RemoveAsync_MissingId_ThrowsArgumentNullException()
+        {
+            repository.Invoking(r => r.RemoveAsync(null)).Should().Throw<ArgumentNullException>();
         }
     }
 }

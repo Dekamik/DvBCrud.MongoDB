@@ -3,6 +3,7 @@ using DvBCrud.MongoDB.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,12 +27,21 @@ namespace DvBCrud.MongoDB.Repositories
 
         public IEnumerable<TModel> Find() => collection.Find(m => true).ToEnumerable();
 
-        public TModel Find(string id) => collection.Find(m => m.Id == id).FirstOrDefault();
+        public TModel Find(string id)
+        {
+            if (id == null)
+                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+
+            return collection.Find(m => m.Id == id).FirstOrDefault();
+        }
 
         public async Task<IEnumerable<TModel>> FindAsync() => (await collection.FindAsync(m => true)).ToEnumerable();
 
         public async Task<TModel> FindAsync(string id)
         {
+            if (id == null)
+                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+
             var cursor = await collection.FindAsync(m => m.Id == id);
             return await cursor.FirstOrDefaultAsync();
         }
@@ -44,12 +54,36 @@ namespace DvBCrud.MongoDB.Repositories
 
         public Task CreateAsync(IEnumerable<TModel> data) => collection.InsertManyAsync(data);
 
-        public void Update(string id, TModel data) => collection.ReplaceOne(d => d.Id == id, data);
+        public void Update(string id, TModel data)
+        {
+            if (id == null)
+                throw new ArgumentNullException($"{nameof(id)} cannot be null");
 
-        public Task UpdateAsync(string id, TModel data) => collection.ReplaceOneAsync(d => d.Id == id, data);
+            collection.ReplaceOne(d => d.Id == id, data);
+        }
 
-        public void Remove(string id) => collection.DeleteOne(d => d.Id == id);
+        public Task UpdateAsync(string id, TModel data) 
+        {
+            if (id == null)
+                throw new ArgumentNullException($"{nameof(id)} cannot be null");
 
-        public Task RemoveAsync(string id) => collection.DeleteOneAsync(d => d.Id == id);
+            return collection.ReplaceOneAsync(d => d.Id == id, data); 
+        }
+
+        public void Remove(string id)
+        {
+            if (id == null)
+                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+
+            collection.DeleteOne(d => d.Id == id);
+        }
+
+        public Task RemoveAsync(string id)
+        {
+            if (id == null)
+                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+
+            return collection.DeleteOneAsync(d => d.Id == id);
+        }
     }
 }
