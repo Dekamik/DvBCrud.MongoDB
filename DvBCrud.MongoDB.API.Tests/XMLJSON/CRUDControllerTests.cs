@@ -1,5 +1,5 @@
 ﻿using DvBCrud.MongoDB.API.CRUDActions;
-using DvBCrud.MongoDB.API.Mocks.Controllers;
+using DvBCrud.MongoDB.API.Mocks.Controllers.Sync;
 using DvBCrud.MongoDB.API.XMLJSON;
 using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;

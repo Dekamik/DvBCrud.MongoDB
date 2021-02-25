@@ -31,22 +31,22 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             this.crudActions = new CRUDActionPermissions(allowedActions);
         }
 
-        public Task<IActionResult> Create([FromBody] TModel data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IActionResult> Delete([FromQuery] string id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<ActionResult<TModel>> Read([FromQuery] string id)
         {
             throw new NotImplementedException();
         }
 
         public Task<ActionResult<IEnumerable<TModel>>> ReadAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IActionResult> Create([FromBody] TModel data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IActionResult> Delete([FromQuery] string id)
         {
             throw new NotImplementedException();
         }
