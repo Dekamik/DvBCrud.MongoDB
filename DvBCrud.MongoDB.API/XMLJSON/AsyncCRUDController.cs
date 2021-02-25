@@ -31,29 +31,66 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             this.crudActions = new CRUDActionPermissions(allowedActions);
         }
 
-        public Task<ActionResult<TModel>> Read([FromQuery] string id)
+        public async Task<IActionResult> Create([FromBody] TModel data)
         {
-            throw new NotImplementedException();
+            if (!crudActions.IsActionAllowed(CRUDAction.Create))
+            {
+                return Forbidden();
+            }
+
+            await repository.CreateAsync(data);
+
+            return Ok();
         }
 
-        public Task<ActionResult<IEnumerable<TModel>>> ReadAll()
+        public async Task<ActionResult<TModel>> Read([FromQuery] string id)
         {
-            throw new NotImplementedException();
+            if (!crudActions.IsActionAllowed(CRUDAction.Read))
+            {
+                return Forbidden();
+            }
+
+            TModel model = await repository.FindAsync(id);
+
+            return Ok(model);
         }
 
-        public Task<IActionResult> Create([FromBody] TModel data)
+        public async Task<ActionResult<IEnumerable<TModel>>> ReadAll()
         {
-            throw new NotImplementedException();
+            if (!crudActions.IsActionAllowed(CRUDAction.Read))
+            {
+                return Forbidden();
+            }
+
+            IEnumerable<TModel> models = await repository.FindAsync();
+
+            return Ok(models);
         }
 
-        public Task<IActionResult> Delete([FromQuery] string id)
+        public async Task<IActionResult> Update([FromQuery] string id, [FromBody] TModel data)
         {
-            throw new NotImplementedException();
+            if (!crudActions.IsActionAllowed(CRUDAction.Update))
+            {
+                return Forbidden();
+            }
+
+            await repository.UpdateAsync(id, data);
+
+            return Ok();
         }
 
-        public Task<IActionResult> Update([FromQuery] string id, [FromBody] TModel data)
+        public async Task<IActionResult> Delete([FromQuery] string id)
         {
-            throw new NotImplementedException();
+            if (!crudActions.IsActionAllowed(CRUDAction.Delete))
+            {
+                return Forbidden();
+            }
+
+            await repository.RemoveAsync(id);
+
+            return Ok();
         }
+
+        protected ObjectResult Forbidden() => StatusCode(403, $"Action forbidden on {nameof(TModel)}");
     }
 }

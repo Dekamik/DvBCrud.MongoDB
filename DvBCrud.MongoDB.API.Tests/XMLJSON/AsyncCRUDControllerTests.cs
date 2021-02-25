@@ -35,7 +35,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
                 Id = id,
                 AnyString = "AnyString"
             };
-            A.CallTo(() => repository.Find(id)).Returns(expected);
+            A.CallTo(() => repository.FindAsync(id)).Returns(expected);
 
             // Act
             var result = (await controller.Read(id)).Result as OkObjectResult;
@@ -61,7 +61,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => repository.Find(id)).MustNotHaveHappened();
+            A.CallTo(() => repository.FindAsync(id)).MustNotHaveHappened();
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
                     AnyString = "AnyString"
                 }
             };
-            A.CallTo(() => repository.Find()).Returns(expected);
+            A.CallTo(() => repository.FindAsync()).Returns(expected);
 
             // Act
             var result = (await controller.ReadAll()).Result as OkObjectResult;
@@ -105,7 +105,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => repository.Find()).MustNotHaveHappened();
+            A.CallTo(() => repository.FindAsync()).MustNotHaveHappened();
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-            A.CallTo(() => repository.Create(model)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => repository.CreateAsync(model)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -141,7 +141,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => repository.Create(model)).MustNotHaveHappened();
+            A.CallTo(() => repository.CreateAsync(model)).MustNotHaveHappened();
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-            A.CallTo(() => repository.Update(id, model)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => repository.UpdateAsync(id, model)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -179,7 +179,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => repository.Update(id, model)).MustNotHaveHappened();
+            A.CallTo(() => repository.UpdateAsync(id, model)).MustNotHaveHappened();
         }
 
         [Fact]
@@ -194,7 +194,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-            A.CallTo(() => repository.Remove(id)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => repository.RemoveAsync(id)).MustHaveHappenedOnceExactly();
         }
 
 
@@ -212,7 +212,7 @@ namespace DvBCrud.MongoDB.API.Tests.XMLJSON
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => repository.Remove(id)).MustNotHaveHappened();
+            A.CallTo(() => repository.RemoveAsync(id)).MustNotHaveHappened();
         }
     }
 }
