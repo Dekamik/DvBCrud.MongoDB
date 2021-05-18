@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>DvBCrud.MongoDB.API.Mocks</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DvBCrud.MongoDb.Api\DvBCrud.MongoDb.Api.csproj" />
+    <ProjectReference Include="..\DvBCrud.MongoDb.Mocks\DvBCrud.MongoDb.Mocks.csproj" />
+  </ItemGroup>
+
+</Project>
