@@ -23,7 +23,7 @@ namespace DvBCrud.MongoDB.Repositories
             Logger = logger;
 
             var database = client.GetDatabase(options.Value.DatabaseName);
-            Collection = (IMongoCollectionProxy<TModel>)database.GetCollection<TModel>(options.Value.CollectionName);
+            Collection = (IMongoCollectionProxy<TModel>)database.GetCollection<TModel>(typeof(TModel).FullName);
         }
 
         public IEnumerable<TModel> Find() => Collection.Find(m => true).ToEnumerable();

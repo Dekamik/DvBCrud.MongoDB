@@ -23,8 +23,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         {
             var mongoSettings = new MongoSettings
             {
-                DatabaseName = "AnyDb",
-                CollectionName = "AnyCollection"
+                DatabaseName = "AnyDb"
             };
             var database = A.Fake<IMongoDatabase>();
             var client = A.Fake<IMongoClient>();
@@ -32,7 +31,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             var options = A.Fake<IOptions<MongoSettings>>();
             _collection = A.Fake<IMongoCollectionProxy<AnyModel>>();
             
-            A.CallTo(() => database.GetCollection<AnyModel>(mongoSettings.CollectionName, null)).Returns(_collection);
+            A.CallTo(() => database.GetCollection<AnyModel>(typeof(AnyModel).FullName, null)).Returns(_collection);
             A.CallTo(() => client.GetDatabase(mongoSettings.DatabaseName, null)).Returns(database);
             A.CallTo(() => options.Value).Returns(mongoSettings);
 
