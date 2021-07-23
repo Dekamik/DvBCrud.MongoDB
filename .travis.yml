@@ -8,7 +8,7 @@ install: dotnet restore
 
 before_script: dotnet test
 
-script: dotnet build DvBCrud.MongoDB.Api/DvBCrud.MongoDB.Api.csproj # Builds DvBCrud.MongoDB aswell (as a dependency)
+script: dotnet build DvBCrud.MongoDb.Api/DvBCrud.MongoDb.Api.csproj # Builds DvBCrud.MongoDb aswell (as a dependency)
 
 deploy:
   skip_cleanup: true
