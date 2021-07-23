@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DvBCrud.MongoDB.Models;
 using DvBCrud.MongoDB.Settings;
@@ -31,20 +32,50 @@ namespace DvBCrud.MongoDB.Repositories
         public TModel Find(string id)
         {
             if (id == null)
-                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+                throw new ArgumentNullException(nameof(id));
 
             return Collection.Find(m => m.Id == id).FirstOrDefault();
         }
+
+        public IEnumerable<TModel> Find(IEnumerable<string> ids)
+        {
+            if (ids == null)
+                throw new ArgumentNullException(nameof(ids));
+            
+            var enumerable = ids as string[] ?? ids.ToArray();
+            
+            if (!enumerable.Any())
+                throw new ArgumentException($"{nameof(ids)} collection is empty.");
+            if (enumerable.Length == 1)
+                return new [] { Find(enumerable.First()) };
+            
+            return Collection.Find(m => enumerable.Contains(m.Id)).ToEnumerable();  
+        } 
 
         public async Task<IEnumerable<TModel>> FindAsync() => (await Collection.FindAsync(m => true)).ToEnumerable();
 
         public async Task<TModel> FindAsync(string id)
         {
             if (id == null)
-                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+                throw new ArgumentNullException(nameof(id));
 
             var cursor = await Collection.FindAsync(m => m.Id == id);
             return await cursor.FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<TModel>> FindAsync(IEnumerable<string> ids)
+        {
+            if (ids == null)
+                throw new ArgumentNullException(nameof(ids));
+
+            var enumerable = ids as string[] ?? ids.ToArray();
+            
+            if (!enumerable.Any())
+                throw new ArgumentException($"{nameof(ids)} collection is empty.");
+            if (enumerable.Length == 1)
+                return new [] { await FindAsync(enumerable.First()) };
+            
+            return (await Collection.FindAsync(m => enumerable.Contains(m.Id))).ToEnumerable();
         }
 
         public void Create(TModel data) => Collection.InsertOne(data);
@@ -58,7 +89,7 @@ namespace DvBCrud.MongoDB.Repositories
         public void Update(string id, TModel data)
         {
             if (id == null)
-                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+                throw new ArgumentNullException(nameof(id));
 
             Collection.ReplaceOne(d => d.Id == id, data);
         }
@@ -66,7 +97,7 @@ namespace DvBCrud.MongoDB.Repositories
         public Task UpdateAsync(string id, TModel data) 
         {
             if (id == null)
-                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+                throw new ArgumentNullException(nameof(id));
 
             return Collection.ReplaceOneAsync(d => d.Id == id, data); 
         }
@@ -74,7 +105,7 @@ namespace DvBCrud.MongoDB.Repositories
         public void Remove(string id)
         {
             if (id == null)
-                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+                throw new ArgumentNullException(nameof(id));
 
             Collection.DeleteOne(d => d.Id == id);
         }
@@ -82,7 +113,7 @@ namespace DvBCrud.MongoDB.Repositories
         public Task RemoveAsync(string id)
         {
             if (id == null)
-                throw new ArgumentNullException($"{nameof(id)} cannot be null");
+                throw new ArgumentNullException(nameof(id));
 
             return Collection.DeleteOneAsync(d => d.Id == id);
         }

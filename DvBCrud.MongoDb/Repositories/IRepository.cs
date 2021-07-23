@@ -9,9 +9,13 @@ namespace DvBCrud.MongoDB.Repositories
 
         TModel Find(string id);
 
+        IEnumerable<TModel> Find(IEnumerable<string> ids);
+
         Task<IEnumerable<TModel>> FindAsync();
 
         Task<TModel> FindAsync(string id);
+
+        Task<IEnumerable<TModel>> FindAsync(IEnumerable<string> ids);
 
         void Create(TModel data);
 
