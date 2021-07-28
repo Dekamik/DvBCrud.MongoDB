@@ -55,6 +55,45 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
             A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
+
+        [Fact]
+        public void Find_WithArray_FindCalled()
+        {
+            var array = new []
+            {
+                "AnyId",
+                "AnyId2"
+            };
+
+            _repository.Find(array);
+
+            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void Find_WithArrayContainingSingleItem_FindWithIdCalled()
+        {
+            var array = new []
+            {
+                "AnyId"
+            };
+
+            _repository.Find(array);
+
+            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void Find_WithNullArray_ThrowsArgumentNullException()
+        {
+            _repository.Invoking(r => r.Find(ids: null)).Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void Find_WithEmptyArray_ThrowsArgumentException()
+        {
+            _repository.Invoking(r => r.Find(new string[] { })).Should().Throw<ArgumentException>();
+        }
         
         [Fact]
         public void Find_MissingId_ThrowsArgumentNullException()
@@ -84,6 +123,45 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         public void FindAsync_MissingId_ThrowsArgumentNullException()
         {
             _repository.Awaiting(r => r.FindAsync(id: null)).Should().Throw<ArgumentNullException>();
+        }
+        
+        [Fact]
+        public async Task FindAsync_WithArray_FindCalled()
+        {
+            var array = new []
+            {
+                "AnyId",
+                "AnyId2"
+            };
+
+            await _repository.FindAsync(array);
+
+            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task FindAsync_WithArrayContainingSingleItem_FindWithIdCalled()
+        {
+            var array = new []
+            {
+                "AnyId"
+            };
+
+            await _repository.FindAsync(array);
+
+            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void FindAsync_WithNullArray_ThrowsArgumentNullException()
+        {
+            _repository.Awaiting(r => r.FindAsync(ids: null)).Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void FindAsync_WithEmptyArray_ThrowsArgumentException()
+        {
+            _repository.Awaiting(r => r.FindAsync(new string[] { })).Should().Throw<ArgumentException>();
         }
 
         [Fact]
