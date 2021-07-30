@@ -9,7 +9,7 @@ namespace DvBCrud.MongoDB.Mocks.Repositories
 {
     public class AnyRepository : Repository<AnyModel>, IAnyRepository
     {
-        public AnyRepository(IMongoClient client, ILogger logger, IOptions<MongoSettings> options) : base(client, logger, options)
+        public AnyRepository(IMongoClient client, ILogger<Repository<AnyModel>> logger, IOptions<MongoSettings> options) : base(client, logger, options)
         {
 
         }

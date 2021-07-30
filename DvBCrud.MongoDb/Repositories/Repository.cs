@@ -17,9 +17,9 @@ namespace DvBCrud.MongoDB.Repositories
         protected readonly IMongoCollectionProxy<TModel> Collection;
 
         // ReSharper disable once MemberCanBePrivate.Global
-        protected readonly ILogger Logger;
+        protected readonly ILogger<Repository<TModel>> Logger;
 
-        protected Repository(IMongoClient client, ILogger logger, IOptions<MongoSettings> options)
+        protected Repository(IMongoClient client, ILogger<Repository<TModel>> logger, IOptions<MongoSettings> options)
         {
             Logger = logger;
 

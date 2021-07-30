@@ -27,7 +27,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             };
             var database = A.Fake<IMongoDatabase>();
             var client = A.Fake<IMongoClient>();
-            var logger = A.Fake<ILogger>();
+            var logger = A.Fake<ILogger<Repository<AnyModel>>>();
             var options = A.Fake<IOptions<MongoSettings>>();
             _collection = A.Fake<IMongoCollectionProxy<AnyModel>>();
             
