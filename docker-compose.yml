@@ -12,7 +12,9 @@ services:
       - "27017:27017"
   
   app:
-    build: .
+    build: 
+      context: .
+      dockerfile: "./DvBCrud.MongoDb.Api.TestApi/Dockerfile"
     image: dekamik/dvbcrud.mongodb.api.testapi:latest
     restart: always
     ports:
@@ -22,6 +24,7 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: admin
       DB_SERVER: localhost
+      DB_PORT: 27017
       DB_DBNAME: Test
     depends_on: 
       - db

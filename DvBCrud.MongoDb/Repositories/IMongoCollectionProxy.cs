@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
 namespace DvBCrud.MongoDB.Repositories
 {
-    public interface IMongoCollectionProxy<TModel> : IMongoCollection<TModel>
+    public interface IMongoCollectionProxy<TModel>
     {
         IFindFluent<TModel, TModel> Find(Expression<Func<TModel, bool>> filter);
 
@@ -18,5 +19,9 @@ namespace DvBCrud.MongoDB.Repositories
         DeleteResult DeleteOne(Expression<Func<TModel, bool>> filter);
 
         Task<DeleteResult> DeleteOneAsync(Expression<Func<TModel, bool>> filter);
+        void InsertOne(TModel data);
+        void InsertMany(IEnumerable<TModel> data);
+        Task InsertOneAsync(TModel data);
+        Task InsertManyAsync(IEnumerable<TModel> data);
     }
 }

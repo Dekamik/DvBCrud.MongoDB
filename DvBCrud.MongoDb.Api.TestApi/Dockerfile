@@ -5,9 +5,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["DvBCrud.MongoDb.Api.TestApi.csproj", "DvBCrud.MongoDb.Api.TestApi/"]
+COPY ["DvBCrud.MongoDb.Api.TestApi/DvBCrud.MongoDb.Api.TestApi.csproj", "DvBCrud.MongoDb.Api.TestApi/"]
 RUN dotnet restore "DvBCrud.MongoDb.Api.TestApi/DvBCrud.MongoDb.Api.TestApi.csproj"
-COPY . "DvBCrud.MongoDb.Api.TestApi/"
+COPY . .
 WORKDIR "/src/DvBCrud.MongoDb.Api.TestApi"
 RUN dotnet build "DvBCrud.MongoDb.Api.TestApi.csproj" -c Release -o /app/build
 

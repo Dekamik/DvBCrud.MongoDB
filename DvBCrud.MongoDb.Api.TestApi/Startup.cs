@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DStonks.Data.Api.Grpc;
+using DStonks.Data.Api.Grpc.Factories;
+using DvBCrud.MongoDb.Api.TestApi.WeatherForecasts;
+using DvBCrud.MongoDB.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 
 namespace DvBCrud.MongoDb.Api.TestApi
 {
@@ -26,6 +31,16 @@ namespace DvBCrud.MongoDb.Api.TestApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
+            
+            services.Configure<MongoSettings>(settings =>
+            {
+                settings.DatabaseName = Environment.GetEnvironmentVariable(EnvironmentVariables.DbDatabase);
+            });
+            
+            services.AddSingleton<IMongoClient>(c => MongoClientFactory.Build());
+            services.AddScoped<WeatherForecastRepository>();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

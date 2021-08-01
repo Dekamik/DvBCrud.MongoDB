@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 
 namespace DvBCrud.MongoDB.API.XMLJSON
 {
+    [ApiController]
+    [Route("[controller]")]
     public abstract class CrudController<TModel, TRepository> : ControllerBase, ICrudController<TModel>
         where TModel : BaseModel
         where TRepository : IRepository<TModel>
@@ -34,6 +36,7 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             CrudActions = new CrudActionPermissions(allowedActions);
         }
 
+        [HttpPost]
         public IActionResult Create([FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
@@ -46,6 +49,7 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return Ok();
         }
 
+        [HttpGet, Route("{id}")]
         public ActionResult<TModel> Read([FromQuery] string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
@@ -58,6 +62,7 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return Ok(entity);
         }
 
+        [HttpGet]
         public ActionResult<IEnumerable<TModel>> ReadAll()
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
@@ -70,6 +75,7 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return Ok(entities);
         }
 
+        [HttpPut, Route("{id}")]
         public IActionResult Update([FromQuery] string id, [FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
@@ -82,6 +88,7 @@ namespace DvBCrud.MongoDB.API.XMLJSON
             return Ok();
         }
 
+        [HttpDelete, Route("{id}")]
         public IActionResult Delete([FromQuery] string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Delete))

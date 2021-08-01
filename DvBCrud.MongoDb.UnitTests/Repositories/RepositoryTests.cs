@@ -177,7 +177,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             _repository.Create(model);
 
             // Assert
-            A.CallTo(() => _collection.InsertOne(model, null, default)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.InsertOne(model)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -196,7 +196,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             _repository.Create(models);
 
             // Assert
-            A.CallTo(() => _collection.InsertMany(models, null, default)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.InsertMany(models)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -212,7 +212,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             _repository.CreateAsync(model);
 
             // Assert
-            A.CallTo(() => _collection.InsertOneAsync(model, null, default)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.InsertOneAsync(model)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -231,7 +231,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             _repository.CreateAsync(models);
 
             // Assert
-            A.CallTo(() => _collection.InsertManyAsync(models, null, default)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.InsertManyAsync(models)).MustHaveHappenedOnceExactly();
         }
         
         [Fact]
