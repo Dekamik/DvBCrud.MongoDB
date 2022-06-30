@@ -5,15 +5,6 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DvBCrud.MongoDb", "DvBCrud.MongoDb\DvBCrud.MongoDb.csproj", "{910A2F32-721D-4E2E-8AF5-7932EA7A7F69}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3CE0A1A-A41C-4174-86A4-A2F418A89453}"
-	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
-		deploy.sh = deploy.sh
-		LICENSE = LICENSE
-		README.md = README.md
-		docker-compose.yml = docker-compose.yml
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DvBCrud.MongoDb.UnitTests", "DvBCrud.MongoDb.UnitTests\DvBCrud.MongoDb.UnitTests.csproj", "{426F27F2-AF13-40F4-8DED-1C9BEDDBD563}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DvBCrud.MongoDb.Mocks", "DvBCrud.MongoDb.Mocks\DvBCrud.MongoDb.Mocks.csproj", "{29087B24-5DFF-42A2-AE86-76C89C7A3CAE}"
