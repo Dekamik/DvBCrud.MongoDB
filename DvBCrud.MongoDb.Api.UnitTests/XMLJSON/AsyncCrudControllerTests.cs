@@ -22,7 +22,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             _repository = A.Fake<IAnyRepository>();
             _logger = A.Fake<ILogger>();
-            _controller = new AnyAsyncController(_repository, _logger);
+            _controller = new AnyAsyncController(_repository);
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             // TODO: Fix restricted controller
             // Arrange
-            var restrictedController = new AnyAsyncTestController(_repository, _logger, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyAsyncTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
             string id = "AnyId";
 
             // Act
@@ -97,7 +97,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             // TODO: Async Test Controller
             // Arrange
-            var restrictedController = new AnyAsyncTestController(_repository, _logger, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyAsyncTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
 
             // Act
             var result = (await restrictedController.ReadAll()).Result as ObjectResult;
@@ -132,7 +132,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             // TODO: Create Async ReadOnly Controller
             // Arrange
-            var readOnlyController = new AnyAsyncReadOnlyController(_repository, _logger);
+            var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             var model = new AnyModel();
 
             // Act
@@ -169,7 +169,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             // TODO: ReadOnly
             // Arrange
-            var readOnlyController = new AnyAsyncReadOnlyController(_repository, _logger);
+            var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             string id = ObjectId.GenerateNewId().ToString();
             var model = new AnyModel();
 
@@ -203,7 +203,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             // TODO: Async Read-Only Controller
             // Arrange
-            var readOnlyController = new AnyAsyncReadOnlyController(_repository, _logger);
+            var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             string id = ObjectId.GenerateNewId().ToString();
 
             // Act

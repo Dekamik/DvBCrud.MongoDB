@@ -7,7 +7,7 @@ namespace DvBCrud.MongoDB.API.Mocks.Controllers.Sync
 {
     public class AnyController : CrudController<AnyModel, IAnyRepository>
     {
-        public AnyController(IAnyRepository repository, ILogger logger) : base(repository, logger)
+        public AnyController(IAnyRepository repository) : base(repository)
         {
 
         }

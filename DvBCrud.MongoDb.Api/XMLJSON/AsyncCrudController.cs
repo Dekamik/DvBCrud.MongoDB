@@ -14,24 +14,19 @@ namespace DvBCrud.MongoDB.API.XMLJSON
     {
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly TRepository Repository;
-        
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected readonly ILogger Logger;
-        
+
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly CrudActionPermissions CrudActions;
 
-        protected AsyncCrudController(TRepository repository, ILogger logger)
+        protected AsyncCrudController(TRepository repository)
         {
             Repository = repository;
-            Logger = logger;
             CrudActions = new CrudActionPermissions();
         }
 
-        protected AsyncCrudController(TRepository repository, ILogger logger, params CrudAction[] allowedActions)
+        protected AsyncCrudController(TRepository repository, params CrudAction[] allowedActions)
         {
             Repository = repository;
-            Logger = logger;
             CrudActions = new CrudActionPermissions(allowedActions);
         }
 

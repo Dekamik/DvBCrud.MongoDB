@@ -22,7 +22,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             _repository = A.Fake<IAnyRepository>();
             _logger = A.Fake<ILogger>();
-            _controller = new AnyController(_repository, _logger);
+            _controller = new AnyController(_repository);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public void Read_ReadForbidden_ReturnsForbidden()
         {
             // Arrange
-            var restrictedController = new AnyTestController(_repository, _logger, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
             string id = "AnyId";
 
             // Act
@@ -95,7 +95,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public void ReadAll_ReadForbidden_ReturnsForbidden()
         {
             // Arrange
-            var restrictedController = new AnyTestController(_repository, _logger, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
 
             // Act
             var result = restrictedController.ReadAll().Result as ObjectResult;
@@ -129,7 +129,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public void Create_CreateForbidden_ReturnsForbidden()
         {
             // Arrange
-            var readOnlyController = new AnyReadOnlyController(_repository, _logger);
+            var readOnlyController = new AnyReadOnlyController(_repository);
             var model = new AnyModel();
 
             // Act
@@ -165,7 +165,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public void Update_UpdateForbidden_ReturnsForbidden()
         {
             // Arrange
-            var readOnlyController = new AnyReadOnlyController(_repository, _logger);
+            var readOnlyController = new AnyReadOnlyController(_repository);
             string id = ObjectId.GenerateNewId().ToString();
             var model = new AnyModel();
 
@@ -198,7 +198,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public void Delete_DeleteForbidden_ReturnsForbidden()
         {
             // Arrange
-            var readOnlyController = new AnyReadOnlyController(_repository, _logger);
+            var readOnlyController = new AnyReadOnlyController(_repository);
             string id = ObjectId.GenerateNewId().ToString();
 
             // Act

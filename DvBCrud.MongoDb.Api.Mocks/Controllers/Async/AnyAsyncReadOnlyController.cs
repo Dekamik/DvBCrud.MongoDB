@@ -8,7 +8,7 @@ namespace DvBCrud.MongoDB.API.Mocks.Controllers.Async
 {
     public class AnyAsyncReadOnlyController : AsyncCrudController<AnyModel, IAnyRepository>, IAnyAsyncReadOnlyController
     {
-        public AnyAsyncReadOnlyController(IAnyRepository repository, ILogger logger) : base(repository, logger, CrudAction.Read)
+        public AnyAsyncReadOnlyController(IAnyRepository repository) : base(repository, CrudAction.Read)
         {
         }
     }

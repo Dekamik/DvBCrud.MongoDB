@@ -8,7 +8,7 @@ namespace DvBCrud.MongoDB.API.Mocks.Controllers.Sync
 {
     public class AnyReadOnlyController : CrudController<AnyModel, IAnyRepository>, IAnyReadOnlyController
     {
-        public AnyReadOnlyController(IAnyRepository repository, ILogger logger) : base(repository, logger, CrudAction.Read)
+        public AnyReadOnlyController(IAnyRepository repository) : base(repository, CrudAction.Read)
         {
 
         }

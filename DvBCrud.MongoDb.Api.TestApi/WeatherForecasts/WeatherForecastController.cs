@@ -6,7 +6,7 @@ namespace DvBCrud.MongoDb.Api.TestApi.WeatherForecasts
 {
     public class WeatherForecastController : CrudController<WeatherForecast, WeatherForecastRepository>
     {
-        public WeatherForecastController(WeatherForecastRepository repository, ILogger<WeatherForecastController> logger) : base(repository, logger)
+        public WeatherForecastController(WeatherForecastRepository repository) : base(repository)
         {
         }
     }

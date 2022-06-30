@@ -12,7 +12,7 @@ namespace DvBCrud.MongoDB.API.Mocks.Controllers.Sync
     /// </summary>
     public class AnyTestController : CrudController<AnyModel, IAnyRepository>, IAnyTestController
     {
-        public AnyTestController(IAnyRepository repository, ILogger logger, params CrudAction[] actions) : base(repository, logger, actions)
+        public AnyTestController(IAnyRepository repository, params CrudAction[] actions) : base(repository, actions)
         {
 
         }
