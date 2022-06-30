@@ -1,19 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DStonks.Data.Api.Grpc;
-using DStonks.Data.Api.Grpc.Factories;
 using DvBCrud.MongoDb.Api.TestApi.WeatherForecasts;
-using DvBCrud.MongoDB.Settings;
+using DvBCrud.MongoDB.Repositories.Wrappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 
@@ -32,14 +24,14 @@ namespace DvBCrud.MongoDb.Api.TestApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging();
-            
-            services.Configure<MongoSettings>(settings =>
-            {
-                settings.DatabaseName = Environment.GetEnvironmentVariable(EnvironmentVariables.DbDatabase);
-            });
-            
-            services.AddSingleton<IMongoClient>(c => MongoClientFactory.Build());
-            services.AddScoped<WeatherForecastRepository>();
+
+            services.AddSingleton<IMongoClient>(c => MongoClientFactory.Create());
+            services.AddScoped<IMongoCollectionWrapperFactory, MongoCollectionWrapperFactory>();
+            services.AddScoped(x => 
+                new WeatherForecastRepository(
+                    x.GetRequiredService<IMongoClient>(), 
+                    x.GetRequiredService<IMongoCollectionWrapperFactory>(),
+                    Environment.GetEnvironmentVariable(EnvironmentVariables.DbDatabase)));
             
             services.AddControllers();
             services.AddSwaggerGen(c =>

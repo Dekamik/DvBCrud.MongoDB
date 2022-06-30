@@ -1,4 +1,4 @@
-namespace DStonks.Data.Api.Grpc
+namespace DvBCrud.MongoDb.Api.TestApi
 {
     public static class EnvironmentVariables
     {

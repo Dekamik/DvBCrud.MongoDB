@@ -4,9 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using DvBCrud.MongoDB.Models;
 using DvBCrud.MongoDB.Repositories.Wrappers;
-using DvBCrud.MongoDB.Settings;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace DvBCrud.MongoDB.Repositories
@@ -18,11 +15,11 @@ namespace DvBCrud.MongoDB.Repositories
         protected readonly IMongoCollectionWrapper<TModel> Collection;
 
         protected Repository(
-            IMongoClient client, 
-            IOptions<MongoSettings> options, 
-            IMongoCollectionWrapperFactory factory)
+            IMongoClient client,
+            IMongoCollectionWrapperFactory factory,
+            string databaseName)
         {
-            var database = client.GetDatabase(options.Value.DatabaseName);
+            var database = client.GetDatabase(databaseName);
             Collection = factory.Create(database.GetCollection<TModel>(typeof(TModel).FullName));
         }
 

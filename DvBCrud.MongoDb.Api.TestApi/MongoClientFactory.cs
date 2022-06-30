@@ -1,13 +1,11 @@
 using System;
 using MongoDB.Driver;
 
-namespace DStonks.Data.Api.Grpc.Factories
+namespace DvBCrud.MongoDb.Api.TestApi
 {
     public class MongoClientFactory
     {
-        public MongoClient Create() => Build();
-
-        public static MongoClient Build()
+        public static MongoClient Create()
         {
             var username = Environment.GetEnvironmentVariable(EnvironmentVariables.DbUsername) 
                            ?? throw new ArgumentException($"{EnvironmentVariables.DbUsername} must be defined.");

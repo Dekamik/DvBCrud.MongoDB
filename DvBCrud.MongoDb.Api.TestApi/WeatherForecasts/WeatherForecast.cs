@@ -1,7 +1,7 @@
 using System;
 using DvBCrud.MongoDB.Models;
 
-namespace DvBCrud.MongoDb.Api.TestApi
+namespace DvBCrud.MongoDb.Api.TestApi.WeatherForecasts
 {
     public class WeatherForecast : BaseModel
     {

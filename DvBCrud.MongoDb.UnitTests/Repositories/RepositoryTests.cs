@@ -3,13 +3,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;
-using DvBCrud.MongoDB.Repositories;
 using DvBCrud.MongoDB.Repositories.Wrappers;
-using DvBCrud.MongoDB.Settings;
 using FakeItEasy;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Xunit;
 
@@ -22,19 +18,14 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
         public RepositoryTests()
         {
-            var mongoSettings = new MongoSettings
-            {
-                DatabaseName = "AnyDb"
-            };
             var client = A.Fake<IMongoClient>();
-            var options = A.Fake<IOptions<MongoSettings>>();
             var factory = A.Fake<IMongoCollectionWrapperFactory>();
             _collection = A.Fake<IMongoCollectionWrapper<AnyModel>>();
             
             A.CallTo(() => factory.Create(A<IMongoCollection<AnyModel>>._))
                 .Returns(_collection);
 
-            _repository = new AnyRepository(client, options, factory);
+            _repository = new AnyRepository(client, factory, "AnyDb");
         }
 
         [Fact]
