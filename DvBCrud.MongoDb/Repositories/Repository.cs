@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DvBCrud.MongoDB.Models;
+using DvBCrud.MongoDB.Repositories.Wrappers;
 using DvBCrud.MongoDB.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,17 +15,15 @@ namespace DvBCrud.MongoDB.Repositories
         where TModel : BaseModel
     {
         // ReSharper disable once MemberCanBePrivate.Global
-        protected readonly IMongoCollectionProxy<TModel> Collection;
+        protected readonly IMongoCollectionWrapper<TModel> Collection;
 
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected readonly ILogger<Repository<TModel>> Logger;
-
-        protected Repository(IMongoClient client, ILogger<Repository<TModel>> logger, IOptions<MongoSettings> options)
+        protected Repository(
+            IMongoClient client, 
+            IOptions<MongoSettings> options, 
+            IMongoCollectionWrapperFactory factory)
         {
-            Logger = logger;
-
             var database = client.GetDatabase(options.Value.DatabaseName);
-            Collection = new MongoCollectionProxy<TModel>(database.GetCollection<TModel>(typeof(TModel).FullName));
+            Collection = factory.Create(database.GetCollection<TModel>(typeof(TModel).FullName));
         }
 
         public IEnumerable<TModel> Find() => Collection.Find(m => true).ToEnumerable();

@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDB.Repositories
+namespace DvBCrud.MongoDB.Repositories.Wrappers
 {
-    public interface IMongoCollectionProxy<TModel>
+    public interface IMongoCollectionWrapper<TModel>
     {
         IFindFluent<TModel, TModel> Find(Expression<Func<TModel, bool>> filter);
 

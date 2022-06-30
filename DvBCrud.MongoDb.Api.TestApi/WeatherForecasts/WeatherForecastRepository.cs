@@ -8,7 +8,7 @@ namespace DvBCrud.MongoDb.Api.TestApi.WeatherForecasts
 {
     public class WeatherForecastRepository : Repository<WeatherForecast>
     {
-        public WeatherForecastRepository(IMongoClient client, ILogger<Repository<WeatherForecast>> logger, IOptions<MongoSettings> options) : base(client, logger, options)
+        public WeatherForecastRepository(IMongoClient client, IOptions<MongoSettings> options) : base(client, options)
         {
         }
     }

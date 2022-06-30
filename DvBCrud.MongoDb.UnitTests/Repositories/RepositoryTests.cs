@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;
 using DvBCrud.MongoDB.Repositories;
+using DvBCrud.MongoDB.Repositories.Wrappers;
 using DvBCrud.MongoDB.Settings;
 using FakeItEasy;
 using FluentAssertions;
@@ -16,7 +17,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 {
     public class RepositoryTests
     {
-        private readonly IMongoCollectionProxy<AnyModel> _collection;
+        private readonly IMongoCollectionWrapper<AnyModel> _collection;
         private readonly AnyRepository _repository;
 
         public RepositoryTests()
@@ -25,17 +26,15 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             {
                 DatabaseName = "AnyDb"
             };
-            var database = A.Fake<IMongoDatabase>();
             var client = A.Fake<IMongoClient>();
-            var logger = A.Fake<ILogger<Repository<AnyModel>>>();
             var options = A.Fake<IOptions<MongoSettings>>();
-            _collection = A.Fake<IMongoCollectionProxy<AnyModel>>();
+            var factory = A.Fake<IMongoCollectionWrapperFactory>();
+            _collection = A.Fake<IMongoCollectionWrapper<AnyModel>>();
             
-            A.CallTo(() => database.GetCollection<AnyModel>(typeof(AnyModel).FullName, null)).Returns(_collection);
-            A.CallTo(() => client.GetDatabase(mongoSettings.DatabaseName, null)).Returns(database);
-            A.CallTo(() => options.Value).Returns(mongoSettings);
+            A.CallTo(() => factory.Create(A<IMongoCollection<AnyModel>>._))
+                .Returns(_collection);
 
-            _repository = new AnyRepository(client, logger, options);
+            _repository = new AnyRepository(client, options, factory);
         }
 
         [Fact]
@@ -43,7 +42,8 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         {
             _repository.Find();
 
-            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored))
+                .MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -53,7 +53,8 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
             _repository.Find(id);
 
-            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored))
+                .MustHaveHappenedOnceExactly();
         }
 
         [Fact]

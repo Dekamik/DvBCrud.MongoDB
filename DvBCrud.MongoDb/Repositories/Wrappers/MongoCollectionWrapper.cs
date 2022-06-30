@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDB.Repositories
+namespace DvBCrud.MongoDB.Repositories.Wrappers
 {
-    public class MongoCollectionProxy<TModel> : IMongoCollectionProxy<TModel>
+    [ExcludeFromCodeCoverage]
+    public class MongoCollectionWrapper<TModel> : IMongoCollectionWrapper<TModel>
     {
         private readonly IMongoCollection<TModel> _collection;
         
-        public MongoCollectionProxy(IMongoCollection<TModel> collection)
+        public MongoCollectionWrapper(IMongoCollection<TModel> collection)
         {
             _collection = collection;
         }
