@@ -15,13 +15,11 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
     public class AsyncCrudControllerTests
     {
         private readonly IAnyRepository _repository;
-        private readonly ILogger _logger;
         private readonly IAnyAsyncController _controller;
 
         public AsyncCrudControllerTests()
         {
             _repository = A.Fake<IAnyRepository>();
-            _logger = A.Fake<ILogger>();
             _controller = new AnyAsyncController(_repository);
         }
 
@@ -29,7 +27,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public async Task Read_AnyId_ReturnsModel()
         {
             // Arrange
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
             var expected = new AnyModel
             {
                 Id = id,

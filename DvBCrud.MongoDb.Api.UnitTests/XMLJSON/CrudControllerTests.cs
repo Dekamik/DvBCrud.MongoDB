@@ -15,13 +15,11 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
     public class CrudControllerTests
     {
         private readonly IAnyRepository _repository;
-        private readonly ILogger _logger;
         private readonly ICrudController<AnyModel> _controller;
 
         public CrudControllerTests()
         {
             _repository = A.Fake<IAnyRepository>();
-            _logger = A.Fake<ILogger>();
             _controller = new AnyController(_repository);
         }
 
