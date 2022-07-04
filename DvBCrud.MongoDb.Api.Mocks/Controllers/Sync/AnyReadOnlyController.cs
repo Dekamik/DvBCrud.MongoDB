@@ -5,9 +5,10 @@ using DvBCrud.MongoDB.Mocks.Repositories;
 
 namespace DvBCrud.MongoDB.API.Mocks.Controllers.Sync
 {
+    [AllowedActions(CrudAction.Read)]
     public class AnyReadOnlyController : CrudController<AnyModel, IAnyRepository>
     {
-        public AnyReadOnlyController(IAnyRepository repository) : base(repository, CrudAction.Read)
+        public AnyReadOnlyController(IAnyRepository repository) : base(repository)
         {
 
         }

@@ -1,4 +1,5 @@
-﻿using DvBCrud.MongoDB.API.CrudActions;
+﻿using System;
+using DvBCrud.MongoDB.API.CrudActions;
 using FluentAssertions;
 using Xunit;
 
@@ -9,7 +10,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.CrudActions
         [Fact]
         public void IsActionAllowed_AllowedActionsNotDefined_AllActionsAllowed()
         {
-            var crudActions = new CrudActionPermissions();
+            var crudActions = Array.Empty<CrudAction>();
             crudActions.IsActionAllowed(CrudAction.Create).Should().BeTrue();
             crudActions.IsActionAllowed(CrudAction.Read).Should().BeTrue();
             crudActions.IsActionAllowed(CrudAction.Update).Should().BeTrue();
@@ -19,7 +20,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.CrudActions
         [Fact]
         public void IsActionAllowed_ReadOnlyActions_OnlyReadAllowed()
         {
-            var crudActions = new CrudActionPermissions(CrudAction.Read);
+            var crudActions = new [] { CrudAction.Read};
             crudActions.IsActionAllowed(CrudAction.Create).Should().BeFalse();
             crudActions.IsActionAllowed(CrudAction.Read).Should().BeTrue();
             crudActions.IsActionAllowed(CrudAction.Update).Should().BeFalse();
@@ -29,7 +30,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.CrudActions
         [Fact]
         public void IsActionAllowed_NoDelete_OnlyDeleteForbidden()
         {
-            var crudActions = new CrudActionPermissions(CrudAction.Create, CrudAction.Read, CrudAction.Update);
+            var crudActions = new [] { CrudAction.Create, CrudAction.Read, CrudAction.Update };
             crudActions.IsActionAllowed(CrudAction.Create).Should().BeTrue();
             crudActions.IsActionAllowed(CrudAction.Read).Should().BeTrue();
             crudActions.IsActionAllowed(CrudAction.Update).Should().BeTrue();

@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using DvBCrud.MongoDB.API.CrudActions;
+using DvBCrud.MongoDB.API.Swagger;
 using DvBCrud.MongoDB.Models;
 using DvBCrud.MongoDB.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -16,21 +19,16 @@ namespace DvBCrud.MongoDB.API.Controllers
         protected readonly TRepository Repository;
 
         // ReSharper disable once MemberCanBePrivate.Global
-        protected readonly CrudActionPermissions CrudActions;
+        protected readonly CrudAction[] CrudActions;
 
         protected CrudController(TRepository repository)
         {
             Repository = repository;
-            CrudActions = new CrudActionPermissions();
-        }
-
-        protected CrudController(TRepository repository, params CrudAction[] allowedActions)
-        {
-            Repository = repository;
-            CrudActions = new CrudActionPermissions(allowedActions);
+            CrudActions = GetType().GetCustomAttribute<AllowedActionsAttribute>()?.AllowedActions ?? Array.Empty<CrudAction>();
         }
 
         [HttpPost]
+        [SwaggerDocsFilter(CrudAction.Create)]
         public virtual IActionResult Create([FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
@@ -44,6 +42,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerDocsFilter(CrudAction.Read)]
         public virtual ActionResult<TModel> Read(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
@@ -57,6 +56,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         }
 
         [HttpGet]
+        [SwaggerDocsFilter(CrudAction.Read)]
         public virtual ActionResult<IEnumerable<TModel>> ReadAll()
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
@@ -70,6 +70,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [SwaggerDocsFilter(CrudAction.Update)]
         public virtual IActionResult Update(string id, [FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
@@ -83,6 +84,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [SwaggerDocsFilter(CrudAction.Delete)]
         public virtual IActionResult Delete(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Delete))

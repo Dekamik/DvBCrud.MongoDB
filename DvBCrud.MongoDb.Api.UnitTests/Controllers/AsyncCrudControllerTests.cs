@@ -49,7 +49,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             // TODO: Fix restricted controller
             // Arrange
-            var restrictedController = new AnyAsyncTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyAsyncTestController(_repository);
             var id = "AnyId";
 
             // Act
@@ -94,7 +94,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             // TODO: Async Test Controller
             // Arrange
-            var restrictedController = new AnyAsyncTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyAsyncTestController(_repository);
 
             // Act
             var result = (await restrictedController.ReadAll()).Result as ObjectResult;

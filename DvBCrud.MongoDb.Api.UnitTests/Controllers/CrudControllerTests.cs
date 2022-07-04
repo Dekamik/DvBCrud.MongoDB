@@ -48,7 +48,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         public void Read_ReadForbidden_ReturnsForbidden()
         {
             // Arrange
-            var restrictedController = new AnyTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyTestController(_repository);
             var id = "AnyId";
 
             // Act
@@ -92,7 +92,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         public void ReadAll_ReadForbidden_ReturnsForbidden()
         {
             // Arrange
-            var restrictedController = new AnyTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyTestController(_repository);
 
             // Act
             var result = restrictedController.ReadAll().Result as ObjectResult;
