@@ -32,9 +32,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual IActionResult Create([FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
-            {
                 return Forbidden();
-            }
 
             Repository.Create(data);
 
@@ -46,9 +44,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual ActionResult<TModel> Read(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
-            {
                 return Forbidden();
-            }
 
             var entity = Repository.Find(id);
 
@@ -60,9 +56,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual ActionResult<IEnumerable<TModel>> ReadAll()
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
-            {
                 return Forbidden();
-            }
 
             var entities = Repository.Find();
 
@@ -74,9 +68,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual IActionResult Update(string id, [FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
-            {
                 return Forbidden();
-            }
 
             Repository.Update(id, data);
 
@@ -88,9 +80,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual IActionResult Delete(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Delete))
-            {
                 return Forbidden();
-            }
 
             Repository.Remove(id);
 

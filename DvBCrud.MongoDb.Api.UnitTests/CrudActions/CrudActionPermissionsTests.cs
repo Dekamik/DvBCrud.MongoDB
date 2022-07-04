@@ -20,7 +20,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.CrudActions
         [Fact]
         public void IsActionAllowed_ReadOnlyActions_OnlyReadAllowed()
         {
-            var crudActions = new [] { CrudAction.Read};
+            var crudActions = new [] { CrudAction.Read };
             crudActions.IsActionAllowed(CrudAction.Create).Should().BeFalse();
             crudActions.IsActionAllowed(CrudAction.Read).Should().BeTrue();
             crudActions.IsActionAllowed(CrudAction.Update).Should().BeFalse();
