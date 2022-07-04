@@ -15,11 +15,11 @@ namespace DvBCrud.MongoDB.Repositories.Wrappers
             _client = client;
         }
         
-        public IMongoCollectionWrapper<T> Create<T>()
+        public IMongoCollectionWrapper<TModel> Create<TModel>()
         {
             var database = _client.GetDatabase(_databaseName);
-            var collection = database.GetCollection<T>(typeof(T).Name);
-            return new MongoCollectionWrapper<T>(collection);
+            var collection = database.GetCollection<TModel>(typeof(TModel).Name);
+            return new MongoCollectionWrapper<TModel>(collection);
         }
     }
 }

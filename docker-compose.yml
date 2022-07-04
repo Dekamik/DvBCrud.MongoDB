@@ -7,8 +7,8 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: DvbCrud
-      MONGO_INITDB_ROOT_PASSWORD: BirkaBulle13
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - "27017:27017"
   
@@ -24,6 +24,6 @@ services:
       - "5000:80"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      DB_CONNECTION_STRING: "mongodb://DvbCrud:BirkaBulle13@dvbcrud.db:27017/admin?retryWrites=true&w=majority"
+      DB_CONNECTION_STRING: "mongodb://root:root@dvbcrud.db:27017/admin?retryWrites=true&w=majority"
     depends_on: 
       - db
