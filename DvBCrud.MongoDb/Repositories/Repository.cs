@@ -83,6 +83,8 @@ namespace DvBCrud.MongoDB.Repositories
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
 
+            data.Id = id;
+
             Collection.ReplaceOne(d => d.Id == id, data);
         }
 
@@ -90,6 +92,8 @@ namespace DvBCrud.MongoDB.Repositories
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
+
+            data.Id = id;
 
             return Collection.ReplaceOneAsync(d => d.Id == id, data); 
         }
