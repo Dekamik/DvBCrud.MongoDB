@@ -1,8 +1,8 @@
-﻿using DvBCrud.MongoDB.API.CRUDActions;
+﻿using DvBCrud.MongoDB.API.CrudActions;
 using FluentAssertions;
 using Xunit;
 
-namespace DvBCrud.MongoDB.API.UnitTests.CRUDActions
+namespace DvBCrud.MongoDB.API.UnitTests.CrudActions
 {
     public class CrudActionPermissionsTests
     {

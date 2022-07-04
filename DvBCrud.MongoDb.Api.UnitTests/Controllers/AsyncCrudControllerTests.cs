@@ -1,30 +1,29 @@
-﻿using DvBCrud.MongoDB.API.CRUDActions;
-using DvBCrud.MongoDB.API.Mocks.Controllers.Sync;
-using DvBCrud.MongoDB.API.Controllers;
+﻿using System.Threading.Tasks;
+using DvBCrud.MongoDB.API.CrudActions;
+using DvBCrud.MongoDB.API.Mocks.Controllers.Async;
 using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Xunit;
 
-namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
+namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 {
-    public class CrudControllerTests
+    public class AsyncCrudControllerTests
     {
         private readonly IAnyRepository _repository;
-        private readonly CrudController<AnyModel, IAnyRepository> _controller;
+        private readonly AnyAsyncController _controller;
 
-        public CrudControllerTests()
+        public AsyncCrudControllerTests()
         {
             _repository = A.Fake<IAnyRepository>();
-            _controller = new AnyController(_repository);
+            _controller = new AnyAsyncController(_repository);
         }
 
         [Fact]
-        public void Read_AnyId_ReturnsModel()
+        public async Task Read_AnyId_ReturnsModel()
         {
             // Arrange
             var id = ObjectId.GenerateNewId().ToString();
@@ -33,10 +32,10 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
                 Id = id,
                 AnyString = "AnyString"
             };
-            A.CallTo(() => _repository.Find(id)).Returns(expected);
+            A.CallTo(() => _repository.FindAsync(id)).Returns(expected);
 
             // Act
-            var result = _controller.Read(id).Result as OkObjectResult;
+            var result = (await _controller.Read(id)).Result as OkObjectResult;
 
             // Assert
             result.Should().NotBeNull();
@@ -46,23 +45,24 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         }
 
         [Fact]
-        public void Read_ReadForbidden_ReturnsForbidden()
+        public async Task Read_ReadForbidden_ReturnsForbidden()
         {
+            // TODO: Fix restricted controller
             // Arrange
-            var restrictedController = new AnyTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyAsyncTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
             var id = "AnyId";
 
             // Act
-            var result = restrictedController.Read(id).Result as ObjectResult;
+            var result = (await restrictedController.Read(id)).Result as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => _repository.Find(id)).MustNotHaveHappened();
+            A.CallTo(() => _repository.FindAsync(id)).MustNotHaveHappened();
         }
 
         [Fact]
-        public void ReadAll_Any_ReturnsAllModels()
+        public async Task ReadAll_Any_ReturnsAllModels()
         {
             // Arrange
             var expected = new[]
@@ -78,10 +78,10 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
                     AnyString = "AnyString"
                 }
             };
-            A.CallTo(() => _repository.Find()).Returns(expected);
+            A.CallTo(() => _repository.FindAsync()).Returns(expected);
 
             // Act
-            var result = _controller.ReadAll().Result as OkObjectResult;
+            var result = (await _controller.ReadAll()).Result as OkObjectResult;
 
             // Assert
             result.Should().NotBeNull();
@@ -90,22 +90,23 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         }
 
         [Fact]
-        public void ReadAll_ReadForbidden_ReturnsForbidden()
+        public async Task ReadAll_ReadForbidden_ReturnsForbidden()
         {
+            // TODO: Async Test Controller
             // Arrange
-            var restrictedController = new AnyTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
+            var restrictedController = new AnyAsyncTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
 
             // Act
-            var result = restrictedController.ReadAll().Result as ObjectResult;
+            var result = (await restrictedController.ReadAll()).Result as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => _repository.Find()).MustNotHaveHappened();
+            A.CallTo(() => _repository.FindAsync()).MustNotHaveHappened();
         }
 
         [Fact]
-        public void Create_AnyModel_ModelCreated()
+        public async Task Create_AnyModel_ModelCreated()
         {
             // Arrange
             var model = new AnyModel
@@ -115,32 +116,33 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
             };
 
             // Act
-            var result = _controller.Create(model) as OkResult;
+            var result = await _controller.Create(model) as OkResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-            A.CallTo(() => _repository.Create(model)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _repository.CreateAsync(model)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
-        public void Create_CreateForbidden_ReturnsForbidden()
+        public async Task Create_CreateForbidden_ReturnsForbidden()
         {
+            // TODO: Create Async ReadOnly Controller
             // Arrange
-            var readOnlyController = new AnyReadOnlyController(_repository);
+            var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             var model = new AnyModel();
 
             // Act
-            var result = readOnlyController.Create(model) as ObjectResult;
+            var result = await readOnlyController.Create(model) as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => _repository.Create(model)).MustNotHaveHappened();
+            A.CallTo(() => _repository.CreateAsync(model)).MustNotHaveHappened();
         }
 
         [Fact]
-        public void Update_AnyModel_ModelUpdated()
+        public async Task Update_AnyModel_ModelUpdated()
         {
             // Arrange
             var id = ObjectId.GenerateNewId().ToString();
@@ -151,61 +153,63 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
             };
 
             // Act
-            var result = _controller.Update(id, model) as OkResult;
+            var result = await _controller.Update(id, model) as OkResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-            A.CallTo(() => _repository.Update(id, model)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _repository.UpdateAsync(id, model)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
-        public void Update_UpdateForbidden_ReturnsForbidden()
+        public async Task Update_UpdateForbidden_ReturnsForbidden()
         {
+            // TODO: ReadOnly
             // Arrange
-            var readOnlyController = new AnyReadOnlyController(_repository);
+            var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             var id = ObjectId.GenerateNewId().ToString();
             var model = new AnyModel();
 
             // Act
-            var result = readOnlyController.Update(id, model) as ObjectResult;
+            var result = await readOnlyController.Update(id, model) as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => _repository.Update(id, model)).MustNotHaveHappened();
+            A.CallTo(() => _repository.UpdateAsync(id, model)).MustNotHaveHappened();
         }
 
         [Fact]
-        public void Delete_AnyValidId_ModelDeleted()
+        public async Task Delete_AnyValidId_ModelDeleted()
         {
             // Arrange
             var id = ObjectId.GenerateNewId().ToString();
 
             // Act
-            var result = _controller.Delete(id) as OkResult;
+            var result = await _controller.Delete(id) as OkResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-            A.CallTo(() => _repository.Remove(id)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _repository.RemoveAsync(id)).MustHaveHappenedOnceExactly();
         }
 
 
         [Fact]
-        public void Delete_DeleteForbidden_ReturnsForbidden()
+        public async Task Delete_DeleteForbidden_ReturnsForbidden()
         {
+            // TODO: Async Read-Only Controller
             // Arrange
-            var readOnlyController = new AnyReadOnlyController(_repository);
+            var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             var id = ObjectId.GenerateNewId().ToString();
 
             // Act
-            var result = readOnlyController.Delete(id) as ObjectResult;
+            var result = await readOnlyController.Delete(id) as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(403);
-            A.CallTo(() => _repository.Remove(id)).MustNotHaveHappened();
+            A.CallTo(() => _repository.RemoveAsync(id)).MustNotHaveHappened();
         }
     }
 }

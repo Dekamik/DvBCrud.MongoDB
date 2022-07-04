@@ -1,6 +1,6 @@
 using DvBCrud.MongoDb.Api.TestApi;
 using DvBCrud.MongoDb.Api.TestApi.WeatherForecasts;
-using DvBCrud.MongoDb.Helpers;
+using DvBCrud.MongoDB.Helpers;
 using DvBCrud.MongoDB.Repositories.Wrappers;
 using MongoDB.Driver;
 

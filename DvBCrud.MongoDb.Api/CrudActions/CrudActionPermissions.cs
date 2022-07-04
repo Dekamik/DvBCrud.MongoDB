@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DvBCrud.MongoDB.API.CRUDActions
+namespace DvBCrud.MongoDB.API.CrudActions
 {
     public class CrudActionPermissions
     {

@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using DvBCrud.MongoDB.API.CRUDActions;
+using DvBCrud.MongoDB.API.CrudActions;
 using DvBCrud.MongoDB.Models;
 using DvBCrud.MongoDB.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace DvBCrud.MongoDB.API.Controllers
 {

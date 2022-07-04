@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDb.Helpers
+namespace DvBCrud.MongoDB.Helpers
 {
     [ExcludeFromCodeCoverage]
     public static class MongoClientFactory
