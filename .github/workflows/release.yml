@@ -30,7 +30,7 @@ jobs:
       matrix:
         project:
           - DvBCrud.MongoDb
-          - DvBCrud.MongoDb.Services
+          #- DvBCrud.MongoDb.Services
           - DvBCrud.MongoDb.Api
     runs-on: ubuntu-latest
     needs: test
