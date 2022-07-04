@@ -18,14 +18,13 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
         public RepositoryTests()
         {
-            var client = A.Fake<IMongoClient>();
             var factory = A.Fake<IMongoCollectionWrapperFactory>();
             _collection = A.Fake<IMongoCollectionWrapper<AnyModel>>();
             
-            A.CallTo(() => factory.Create(A<IMongoCollection<AnyModel>>._))
+            A.CallTo(() => factory.Create<AnyModel>())
                 .Returns(_collection);
 
-            _repository = new AnyRepository(client, factory, "AnyDb");
+            _repository = new AnyRepository(factory);
         }
 
         [Fact]

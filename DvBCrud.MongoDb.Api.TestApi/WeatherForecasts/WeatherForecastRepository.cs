@@ -6,7 +6,7 @@ namespace DvBCrud.MongoDb.Api.TestApi.WeatherForecasts
 {
     public class WeatherForecastRepository : Repository<WeatherForecast>
     {
-        public WeatherForecastRepository(IMongoClient client, IMongoCollectionWrapperFactory factory, string databaseName) : base(client, factory, databaseName)
+        public WeatherForecastRepository(IMongoCollectionWrapperFactory factory) : base(factory)
         {
         }
     }

@@ -14,18 +14,14 @@ namespace DvBCrud.MongoDB.Repositories
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly IMongoCollectionWrapper<TModel> Collection;
 
-        protected Repository(
-            IMongoClient client,
-            IMongoCollectionWrapperFactory factory,
-            string databaseName)
+        protected Repository(IMongoCollectionWrapperFactory factory)
         {
-            var database = client.GetDatabase(databaseName);
-            Collection = factory.Create(database.GetCollection<TModel>(typeof(TModel).FullName));
+            Collection = factory.Create<TModel>();
         }
 
-        public IEnumerable<TModel> Find() => Collection.Find(m => true).ToEnumerable();
+        public virtual IEnumerable<TModel> Find() => Collection.Find(m => true).ToEnumerable();
 
-        public TModel Find(string id)
+        public virtual TModel Find(string id)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
@@ -33,7 +29,7 @@ namespace DvBCrud.MongoDB.Repositories
             return Collection.Find(m => m.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<TModel> Find(IEnumerable<string> ids)
+        public virtual IEnumerable<TModel> Find(IEnumerable<string> ids)
         {
             if (ids == null)
                 throw new ArgumentNullException(nameof(ids));
@@ -42,15 +38,15 @@ namespace DvBCrud.MongoDB.Repositories
             
             if (!enumerable.Any())
                 throw new ArgumentException($"{nameof(ids)} collection is empty.");
-            if (enumerable.Length == 1)
-                return new [] { Find(enumerable.First()) };
             
-            return Collection.Find(m => enumerable.Contains(m.Id)).ToEnumerable();  
+            return enumerable.Length == 1 ? 
+                new [] { Find(enumerable.First()) } : 
+                Collection.Find(m => enumerable.Contains(m.Id)).ToEnumerable();
         } 
 
-        public async Task<IEnumerable<TModel>> FindAsync() => (await Collection.FindAsync(m => true)).ToEnumerable();
+        public virtual async Task<IEnumerable<TModel>> FindAsync() => (await Collection.FindAsync(m => true)).ToEnumerable();
 
-        public async Task<TModel> FindAsync(string id)
+        public virtual async Task<TModel> FindAsync(string id)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
@@ -59,7 +55,7 @@ namespace DvBCrud.MongoDB.Repositories
             return await cursor.FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<TModel>> FindAsync(IEnumerable<string> ids)
+        public virtual async Task<IEnumerable<TModel>> FindAsync(IEnumerable<string> ids)
         {
             if (ids == null)
                 throw new ArgumentNullException(nameof(ids));
@@ -68,21 +64,21 @@ namespace DvBCrud.MongoDB.Repositories
             
             if (!enumerable.Any())
                 throw new ArgumentException($"{nameof(ids)} collection is empty.");
-            if (enumerable.Length == 1)
-                return new [] { await FindAsync(enumerable.First()) };
             
-            return (await Collection.FindAsync(m => enumerable.Contains(m.Id))).ToEnumerable();
+            return enumerable.Length == 1 ? 
+                new [] { await FindAsync(enumerable.First()) } : 
+                (await Collection.FindAsync(m => enumerable.Contains(m.Id))).ToEnumerable();
         }
 
-        public void Create(TModel data) => Collection.InsertOne(data);
+        public virtual void Create(TModel data) => Collection.InsertOne(data);
 
-        public void Create(IEnumerable<TModel> data) => Collection.InsertMany(data);
+        public virtual void Create(IEnumerable<TModel> data) => Collection.InsertMany(data);
 
-        public Task CreateAsync(TModel data) => Collection.InsertOneAsync(data);
+        public virtual Task CreateAsync(TModel data) => Collection.InsertOneAsync(data);
 
-        public Task CreateAsync(IEnumerable<TModel> data) => Collection.InsertManyAsync(data);
+        public virtual Task CreateAsync(IEnumerable<TModel> data) => Collection.InsertManyAsync(data);
 
-        public void Update(string id, TModel data)
+        public virtual void Update(string id, TModel data)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
@@ -90,7 +86,7 @@ namespace DvBCrud.MongoDB.Repositories
             Collection.ReplaceOne(d => d.Id == id, data);
         }
 
-        public Task UpdateAsync(string id, TModel data) 
+        public virtual Task UpdateAsync(string id, TModel data) 
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
@@ -98,7 +94,7 @@ namespace DvBCrud.MongoDB.Repositories
             return Collection.ReplaceOneAsync(d => d.Id == id, data); 
         }
 
-        public void Remove(string id)
+        public virtual void Remove(string id)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
@@ -106,7 +102,7 @@ namespace DvBCrud.MongoDB.Repositories
             Collection.DeleteOne(d => d.Id == id);
         }
 
-        public Task RemoveAsync(string id)
+        public virtual Task RemoveAsync(string id)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));

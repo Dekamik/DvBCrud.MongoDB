@@ -15,7 +15,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
     public class AsyncCrudControllerTests
     {
         private readonly IAnyRepository _repository;
-        private readonly IAnyAsyncController _controller;
+        private readonly AnyAsyncController _controller;
 
         public AsyncCrudControllerTests()
         {
@@ -51,7 +51,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
             // TODO: Fix restricted controller
             // Arrange
             var restrictedController = new AnyAsyncTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
-            string id = "AnyId";
+            var id = "AnyId";
 
             // Act
             var result = (await restrictedController.Read(id)).Result as ObjectResult;
@@ -146,7 +146,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public async Task Update_AnyModel_ModelUpdated()
         {
             // Arrange
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
             var model = new AnyModel
             {
                 Id = id,
@@ -168,7 +168,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
             // TODO: ReadOnly
             // Arrange
             var readOnlyController = new AnyAsyncReadOnlyController(_repository);
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
             var model = new AnyModel();
 
             // Act
@@ -184,7 +184,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public async Task Delete_AnyValidId_ModelDeleted()
         {
             // Arrange
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
 
             // Act
             var result = await _controller.Delete(id) as OkResult;
@@ -202,7 +202,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
             // TODO: Async Read-Only Controller
             // Arrange
             var readOnlyController = new AnyAsyncReadOnlyController(_repository);
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
 
             // Act
             var result = await readOnlyController.Delete(id) as ObjectResult;

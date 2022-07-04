@@ -1,5 +1,5 @@
 using System;
-using DvBCrud.MongoDb.Api.TestApi.WeatherForecasts;
+using DvBCrud.MongoDb.Api.TestApiOld.WeatherForecasts;
 using DvBCrud.MongoDB.Repositories.Wrappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDb.Api.TestApi
+namespace DvBCrud.MongoDb.Api.TestApiOld
 {
     public class Startup
     {
@@ -36,7 +36,7 @@ namespace DvBCrud.MongoDb.Api.TestApi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "DvBCrud.MongoDb.Api.TestApi", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "DvBCrud.MongoDb.Api.TestApiOld", Version = "v1"});
             });
         }
 
@@ -47,10 +47,10 @@ namespace DvBCrud.MongoDb.Api.TestApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DvBCrud.MongoDb.Api.TestApi v1"));
+                app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

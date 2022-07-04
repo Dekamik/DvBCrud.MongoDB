@@ -1,23 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using DvBCrud.MongoDb.Api.TestApi;
+using DvBCrud.MongoDb.Api.TestApi.WeatherForecasts;
+using DvBCrud.MongoDb.Helpers;
+using DvBCrud.MongoDB.Repositories.Wrappers;
+using MongoDB.Driver;
 
-namespace DvBCrud.MongoDb.Api.TestApi
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddLogging();
+
+var (client, databaseName) = MongoClientFactory.Create(EnvironmentVariables.DbConnectionString ?? throw new InvalidOperationException());
+builder.Services.AddSingleton<IMongoClient>(c => client);
+builder.Services.AddScoped<IMongoCollectionWrapperFactory>(x => 
+    new MongoCollectionWrapperFactory(
+        x.GetRequiredService<IMongoClient>(), 
+        databaseName));
+builder.Services.AddScoped<WeatherForecastRepository>();
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-    }
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

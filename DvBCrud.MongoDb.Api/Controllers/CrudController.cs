@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using DvBCrud.MongoDB.API.CRUDActions;
 using DvBCrud.MongoDB.Models;
 using DvBCrud.MongoDB.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace DvBCrud.MongoDB.API.XMLJSON
+namespace DvBCrud.MongoDB.API.Controllers
 {
-    public abstract class AsyncCrudController<TModel, TRepository> : ControllerBase, IAsyncCrudController<TModel>
+    [ApiController]
+    [Route("[controller]")]
+    public abstract class CrudController<TModel, TRepository> : ControllerBase
         where TModel : BaseModel
         where TRepository : IRepository<TModel>
     {
@@ -18,74 +19,79 @@ namespace DvBCrud.MongoDB.API.XMLJSON
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly CrudActionPermissions CrudActions;
 
-        protected AsyncCrudController(TRepository repository)
+        protected CrudController(TRepository repository)
         {
             Repository = repository;
             CrudActions = new CrudActionPermissions();
         }
 
-        protected AsyncCrudController(TRepository repository, params CrudAction[] allowedActions)
+        protected CrudController(TRepository repository, params CrudAction[] allowedActions)
         {
             Repository = repository;
             CrudActions = new CrudActionPermissions(allowedActions);
         }
 
-        public async Task<IActionResult> Create([FromBody] TModel data)
+        [HttpPost]
+        public virtual IActionResult Create([FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
             {
                 return Forbidden();
             }
 
-            await Repository.CreateAsync(data);
+            Repository.Create(data);
 
             return Ok();
         }
 
-        public async Task<ActionResult<TModel>> Read([FromQuery] string id)
+        [HttpGet("{id}")]
+        public virtual ActionResult<TModel> Read(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
             {
                 return Forbidden();
             }
 
-            TModel model = await Repository.FindAsync(id);
+            var entity = Repository.Find(id);
 
-            return Ok(model);
+            return Ok(entity);
         }
 
-        public async Task<ActionResult<IEnumerable<TModel>>> ReadAll()
+        [HttpGet]
+        public virtual ActionResult<IEnumerable<TModel>> ReadAll()
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
             {
                 return Forbidden();
             }
 
-            IEnumerable<TModel> models = await Repository.FindAsync();
+            var entities = Repository.Find();
 
-            return Ok(models);
+            return Ok(entities);
         }
 
-        public async Task<IActionResult> Update([FromQuery] string id, [FromBody] TModel data)
+        [HttpPut("{id}")]
+        public virtual IActionResult Update(string id, [FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
             {
                 return Forbidden();
             }
 
-            await Repository.UpdateAsync(id, data);
+            Repository.Update(id, data);
 
             return Ok();
         }
 
-        public async Task<IActionResult> Delete([FromQuery] string id)
+        [HttpDelete("{id}")]
+        public virtual IActionResult Delete(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Delete))
             {
                 return Forbidden();
             }
 
-            await Repository.RemoveAsync(id);
+            Repository.Remove(id);
 
             return Ok();
         }

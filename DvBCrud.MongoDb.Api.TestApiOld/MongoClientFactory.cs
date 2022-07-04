@@ -1,7 +1,7 @@
 using System;
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDb.Api.TestApi
+namespace DvBCrud.MongoDb.Api.TestApiOld
 {
     public class MongoClientFactory
     {

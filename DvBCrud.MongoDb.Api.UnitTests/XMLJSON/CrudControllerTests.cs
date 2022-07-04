@@ -1,6 +1,6 @@
 ﻿using DvBCrud.MongoDB.API.CRUDActions;
 using DvBCrud.MongoDB.API.Mocks.Controllers.Sync;
-using DvBCrud.MongoDB.API.XMLJSON;
+using DvBCrud.MongoDB.API.Controllers;
 using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;
 using FakeItEasy;
@@ -15,7 +15,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
     public class CrudControllerTests
     {
         private readonly IAnyRepository _repository;
-        private readonly ICrudController<AnyModel> _controller;
+        private readonly CrudController<AnyModel, IAnyRepository> _controller;
 
         public CrudControllerTests()
         {
@@ -27,7 +27,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public void Read_AnyId_ReturnsModel()
         {
             // Arrange
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
             var expected = new AnyModel
             {
                 Id = id,
@@ -50,7 +50,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             // Arrange
             var restrictedController = new AnyTestController(_repository, CrudAction.Create, CrudAction.Update, CrudAction.Delete);
-            string id = "AnyId";
+            var id = "AnyId";
 
             // Act
             var result = restrictedController.Read(id).Result as ObjectResult;
@@ -143,7 +143,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public void Update_AnyModel_ModelUpdated()
         {
             // Arrange
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
             var model = new AnyModel
             {
                 Id = id,
@@ -164,7 +164,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             // Arrange
             var readOnlyController = new AnyReadOnlyController(_repository);
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
             var model = new AnyModel();
 
             // Act
@@ -180,7 +180,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         public void Delete_AnyValidId_ModelDeleted()
         {
             // Arrange
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
 
             // Act
             var result = _controller.Delete(id) as OkResult;
@@ -197,7 +197,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.XMLJSON
         {
             // Arrange
             var readOnlyController = new AnyReadOnlyController(_repository);
-            string id = ObjectId.GenerateNewId().ToString();
+            var id = ObjectId.GenerateNewId().ToString();
 
             // Act
             var result = readOnlyController.Delete(id) as ObjectResult;

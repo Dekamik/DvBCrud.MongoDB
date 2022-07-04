@@ -2,29 +2,28 @@ version: "3"
 
 services: 
   db:
+    container_name: dvbcrud.db
+    hostname: dvbcrud.db
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: admin
-      MONGO_INITDB_DATABASE: Test
+      MONGO_INITDB_ROOT_USERNAME: DvbCrud
+      MONGO_INITDB_ROOT_PASSWORD: BirkaBulle13
     ports:
       - "27017:27017"
   
   app:
+    container_name: dvbcrud.api
+    hostname: dvbcrud.api
     build: 
       context: .
       dockerfile: "./DvBCrud.MongoDb.Api.TestApi/Dockerfile"
     image: dekamik/dvbcrud.mongodb.api.testapi:latest
     restart: always
     ports:
-      - "3000:80"
-      - "3001:443"
+      - "5000:80"
     environment:
-      DB_USERNAME: root
-      DB_PASSWORD: admin
-      DB_SERVER: localhost
-      DB_PORT: 27017
-      DB_DBNAME: Test
+      ASPNETCORE_ENVIRONMENT: Development
+      DB_CONNECTION_STRING: "mongodb://DvbCrud:BirkaBulle13@dvbcrud.db:27017/admin?retryWrites=true&w=majority"
     depends_on: 
       - db
