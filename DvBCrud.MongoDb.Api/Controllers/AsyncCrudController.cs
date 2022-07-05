@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using DvBCrud.Common.Api.Controllers;
 using DvBCrud.Common.Api.CrudActions;
 using DvBCrud.Common.Api.Swagger;
 using DvBCrud.MongoDB.Models;
@@ -10,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DvBCrud.MongoDB.API.Controllers
 {
-    public abstract class AsyncCrudController<TModel, TRepository> : ControllerBase
+    public abstract class AsyncCrudController<TModel, TRepository> : CrudControllerBase<TModel>
         where TModel : BaseModel
         where TRepository : IRepository<TModel>
     {
@@ -32,7 +34,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
             {
-                return Forbidden();
+                return NotAllowed(HttpMethod.Delete.Method);;
             }
 
             await Repository.CreateAsync(data);
@@ -46,7 +48,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
             {
-                return Forbidden();
+                return NotAllowed(HttpMethod.Delete.Method);;
             }
 
             var model = await Repository.FindAsync(id);
@@ -60,7 +62,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
             {
-                return Forbidden();
+                return NotAllowed(HttpMethod.Delete.Method);;
             }
 
             var models = await Repository.FindAsync();
@@ -74,7 +76,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
             {
-                return Forbidden();
+                return NotAllowed(HttpMethod.Delete.Method);;
             }
 
             await Repository.UpdateAsync(id, data);
@@ -88,14 +90,12 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Delete))
             {
-                return Forbidden();
+                return NotAllowed(HttpMethod.Delete.Method);;
             }
 
             await Repository.RemoveAsync(id);
 
             return Ok();
         }
-
-        protected ObjectResult Forbidden() => StatusCode(403, $"Action forbidden on {nameof(TModel)}");
     }
 }

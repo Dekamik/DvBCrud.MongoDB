@@ -55,7 +55,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.Find(id)).MustNotHaveHappened();
         }
 
@@ -98,7 +98,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.Find()).MustNotHaveHappened();
         }
 
@@ -133,7 +133,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.Create(model)).MustNotHaveHappened();
         }
 
@@ -170,7 +170,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.Update(id, model)).MustNotHaveHappened();
         }
 
@@ -202,7 +202,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.Remove(id)).MustNotHaveHappened();
         }
     }

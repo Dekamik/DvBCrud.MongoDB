@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Reflection;
+using DvBCrud.Common.Api.Controllers;
 using DvBCrud.Common.Api.CrudActions;
 using DvBCrud.Common.Api.Swagger;
 using DvBCrud.MongoDB.Models;
@@ -11,7 +13,7 @@ namespace DvBCrud.MongoDB.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public abstract class CrudController<TModel, TRepository> : ControllerBase
+    public abstract class CrudController<TModel, TRepository> : CrudControllerBase<TModel>
         where TModel : BaseModel
         where TRepository : IRepository<TModel>
     {
@@ -32,7 +34,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual IActionResult Create([FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
-                return Forbidden();
+                return NotAllowed(HttpMethod.Post.Method);;
 
             Repository.Create(data);
 
@@ -44,7 +46,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual ActionResult<TModel> Read(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
-                return Forbidden();
+                return NotAllowed(HttpMethod.Get.Method);;
 
             var entity = Repository.Find(id);
 
@@ -56,7 +58,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual ActionResult<IEnumerable<TModel>> ReadAll()
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
-                return Forbidden();
+                return NotAllowed(HttpMethod.Get.Method);;
 
             var entities = Repository.Find();
 
@@ -68,7 +70,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual IActionResult Update(string id, [FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
-                return Forbidden();
+                return NotAllowed(HttpMethod.Put.Method);;
 
             Repository.Update(id, data);
 
@@ -80,13 +82,11 @@ namespace DvBCrud.MongoDB.API.Controllers
         public virtual IActionResult Delete(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Delete))
-                return Forbidden();
+                return NotAllowed(HttpMethod.Delete.Method);
 
             Repository.Remove(id);
 
             return Ok();
         }
-
-        protected ObjectResult Forbidden() => StatusCode(403, $"Action forbidden on {nameof(TModel)}");
     }
 }

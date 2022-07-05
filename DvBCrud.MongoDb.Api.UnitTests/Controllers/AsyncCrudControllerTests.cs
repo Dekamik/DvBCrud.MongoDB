@@ -56,7 +56,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.FindAsync(id)).MustNotHaveHappened();
         }
 
@@ -100,7 +100,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.FindAsync()).MustNotHaveHappened();
         }
 
@@ -136,7 +136,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.CreateAsync(model)).MustNotHaveHappened();
         }
 
@@ -174,7 +174,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.UpdateAsync(id, model)).MustNotHaveHappened();
         }
 
@@ -207,7 +207,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
             // Assert
             result.Should().NotBeNull();
-            result.StatusCode.Should().Be(403);
+            result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.RemoveAsync(id)).MustNotHaveHappened();
         }
     }
