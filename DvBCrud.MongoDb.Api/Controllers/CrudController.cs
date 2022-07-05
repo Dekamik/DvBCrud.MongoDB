@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using DvBCrud.MongoDB.API.CrudActions;
-using DvBCrud.MongoDB.API.Swagger;
+using DvBCrud.Common.Api.CrudActions;
+using DvBCrud.Common.Api.Swagger;
 using DvBCrud.MongoDB.Models;
 using DvBCrud.MongoDB.Repositories;
 using Microsoft.AspNetCore.Mvc;
