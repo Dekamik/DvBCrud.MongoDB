@@ -17,18 +17,23 @@ namespace DvBCrud.MongoDB.Repositories.Wrappers
             _collection = collection;
         }
 
-        public IFindFluent<TModel, TModel> Find(Expression<Func<TModel, bool>> filter) => _collection.Find(filter);
+        public IFindFluent<TModel, TModel> Find(Expression<Func<TModel, bool>> filter) => 
+            _collection.Find(filter);
 
         public Task<IAsyncCursor<TModel>> FindAsync(Expression<Func<TModel, bool>> filter) =>
             _collection.FindAsync(filter);
 
-        public void InsertOne(TModel data) => _collection.InsertOne(data);
+        public void InsertOne(TModel data) => 
+            _collection.InsertOne(data);
 
-        public void InsertMany(IEnumerable<TModel> data) => _collection.InsertMany(data);
+        public void InsertMany(IEnumerable<TModel> data) => 
+            _collection.InsertMany(data);
 
-        public Task InsertOneAsync(TModel data) => _collection.InsertOneAsync(data);
+        public Task InsertOneAsync(TModel data) => 
+            _collection.InsertOneAsync(data);
 
-        public Task InsertManyAsync(IEnumerable<TModel> data) => _collection.InsertManyAsync(data);
+        public Task InsertManyAsync(IEnumerable<TModel> data) => 
+            _collection.InsertManyAsync(data);
 
         public ReplaceOneResult ReplaceOne(Expression<Func<TModel, bool>> filter, TModel replacement) =>
             _collection.ReplaceOne(filter, replacement);
@@ -36,7 +41,8 @@ namespace DvBCrud.MongoDB.Repositories.Wrappers
         public Task<ReplaceOneResult> ReplaceOneAsync(Expression<Func<TModel, bool>> filter, TModel replacement) =>
             _collection.ReplaceOneAsync(filter, replacement);
 
-        public DeleteResult DeleteOne(Expression<Func<TModel, bool>> filter) => _collection.DeleteOne(filter);
+        public DeleteResult DeleteOne(Expression<Func<TModel, bool>> filter) => 
+            _collection.DeleteOne(filter);
 
         public Task<DeleteResult> DeleteOneAsync(Expression<Func<TModel, bool>> filter) =>
             _collection.DeleteOneAsync(filter);

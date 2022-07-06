@@ -19,14 +19,17 @@ namespace DvBCrud.MongoDB.Repositories
             Collection = factory.Create<TModel>();
         }
 
-        public virtual IEnumerable<TModel> Find() => Collection.Find(m => true).ToEnumerable();
+        public virtual IEnumerable<TModel> Find() => 
+            Collection.Find(m => true)
+                .ToEnumerable();
 
         public virtual TModel Find(string id)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
 
-            return Collection.Find(m => m.Id == id).FirstOrDefault();
+            return Collection.Find(m => m.Id == id)
+                .FirstOrDefault();
         }
 
         public virtual IEnumerable<TModel> Find(IEnumerable<string> ids)
@@ -40,11 +43,17 @@ namespace DvBCrud.MongoDB.Repositories
                 throw new ArgumentException($"{nameof(ids)} collection is empty.");
             
             return enumerable.Length == 1 ? 
-                new [] { Find(enumerable.First()) } : 
-                Collection.Find(m => enumerable.Contains(m.Id)).ToEnumerable();
+                new []
+                {
+                    Find(enumerable.First())
+                } : 
+                Collection.Find(m => enumerable.Contains(m.Id))
+                    .ToEnumerable();
         } 
 
-        public virtual async Task<IEnumerable<TModel>> FindAsync() => (await Collection.FindAsync(m => true)).ToEnumerable();
+        public virtual async Task<IEnumerable<TModel>> FindAsync() => 
+            (await Collection.FindAsync(m => true))
+            .ToEnumerable();
 
         public virtual async Task<TModel> FindAsync(string id)
         {
@@ -66,8 +75,12 @@ namespace DvBCrud.MongoDB.Repositories
                 throw new ArgumentException($"{nameof(ids)} collection is empty.");
             
             return enumerable.Length == 1 ? 
-                new [] { await FindAsync(enumerable.First()) } : 
-                (await Collection.FindAsync(m => enumerable.Contains(m.Id))).ToEnumerable();
+                new []
+                {
+                    await FindAsync(enumerable.First())
+                } : 
+                (await Collection.FindAsync(m => enumerable.Contains(m.Id)))
+                    .ToEnumerable();
         }
 
         public virtual void Create(TModel data)
