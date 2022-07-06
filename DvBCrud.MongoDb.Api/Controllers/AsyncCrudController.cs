@@ -34,7 +34,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
             {
-                return NotAllowed(HttpMethod.Delete.Method);;
+                return NotAllowed(HttpMethod.Delete.Method);
             }
 
             await Repository.CreateAsync(data);
@@ -48,7 +48,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
             {
-                return NotAllowed(HttpMethod.Delete.Method);;
+                return NotAllowed(HttpMethod.Delete.Method);
             }
 
             var model = await Repository.FindAsync(id);
@@ -62,7 +62,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
             {
-                return NotAllowed(HttpMethod.Delete.Method);;
+                return NotAllowed(HttpMethod.Delete.Method);
             }
 
             var models = await Repository.FindAsync();
@@ -76,7 +76,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
             {
-                return NotAllowed(HttpMethod.Delete.Method);;
+                return NotAllowed(HttpMethod.Delete.Method);
             }
 
             await Repository.UpdateAsync(id, data);
@@ -90,7 +90,7 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Delete))
             {
-                return NotAllowed(HttpMethod.Delete.Method);;
+                return NotAllowed(HttpMethod.Delete.Method);
             }
 
             await Repository.RemoveAsync(id);
