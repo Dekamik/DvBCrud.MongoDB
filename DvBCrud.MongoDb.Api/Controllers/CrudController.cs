@@ -26,7 +26,8 @@ namespace DvBCrud.MongoDB.API.Controllers
         protected CrudController(TRepository repository)
         {
             Repository = repository;
-            CrudActions = GetType().GetCustomAttribute<AllowedActionsAttribute>()?.AllowedActions ?? Array.Empty<CrudAction>();
+            CrudActions = GetType().GetCustomAttribute<AllowedActionsAttribute>()?.AllowedActions ?? 
+                          Array.Empty<CrudAction>();
         }
 
         [HttpPost]
