@@ -420,7 +420,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         [Fact]
         public void RemoveAsync_NullId_ThrowsArgumentNullException()
         {
-            _repository.Invoking(r => r.RemoveAsync(null))
+            _repository.Awaiting(r => r.RemoveAsync(null))
                 .Should()
                 .Throw<ArgumentNullException>();
         }
