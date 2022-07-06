@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using DvBCrud.MongoDB.API.Mocks.Controllers.Async;
 using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;
@@ -44,9 +46,8 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task Read_ReadForbidden_ReturnsForbidden()
+        public async Task Read_ReadForbidden_ReturnsNotAllowed()
         {
-            // TODO: Fix restricted controller
             // Arrange
             var restrictedController = new AnyAsyncTestController(_repository);
             var id = "AnyId";
@@ -58,6 +59,17 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.FindAsync(id)).MustNotHaveHappened();
+        }
+        
+        [Fact]
+        public async Task Read_ThrowsArgumentNullException_ReturnsBadRequest()
+        {
+            A.CallTo(() => _repository.FindAsync((string)null))
+                .Throws<ArgumentNullException>();
+
+            var result = (BadRequestObjectResult) (await _controller.Read(null)).Result;
+
+            result.StatusCode.Should().Be(400);
         }
 
         [Fact]
@@ -91,7 +103,6 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         [Fact]
         public async Task ReadAll_ReadForbidden_ReturnsForbidden()
         {
-            // TODO: Async Test Controller
             // Arrange
             var restrictedController = new AnyAsyncTestController(_repository);
 
@@ -124,9 +135,8 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task Create_CreateForbidden_ReturnsForbidden()
+        public async Task Create_CreateForbidden_ReturnsNotAllowed()
         {
-            // TODO: Create Async ReadOnly Controller
             // Arrange
             var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             var model = new AnyModel();
@@ -138,6 +148,19 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.CreateAsync(model)).MustNotHaveHappened();
+        }
+        
+        [Fact]
+        public async Task Create_ThrowsArgumentNullException_ReturnsBadRequest()
+        {
+            var model = new AnyModel();
+            
+            A.CallTo(() => _repository.CreateAsync(model))
+                .Throws<ArgumentNullException>();
+
+            var result = (BadRequestObjectResult) await _controller.Create(model);
+
+            result.StatusCode.Should().Be(400);
         }
 
         [Fact]
@@ -161,9 +184,8 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task Update_UpdateForbidden_ReturnsForbidden()
+        public async Task Update_UpdateForbidden_ReturnsNotAllowed()
         {
-            // TODO: ReadOnly
             // Arrange
             var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             var id = ObjectId.GenerateNewId().ToString();
@@ -176,6 +198,34 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.UpdateAsync(id, model)).MustNotHaveHappened();
+        }
+        
+        [Fact]
+        public async Task Update_ThrowsArgumentNullException_ReturnsBadRequest()
+        {
+            var id = ObjectId.GenerateNewId().ToString();
+            var model = new AnyModel();
+
+            A.CallTo(() => _repository.UpdateAsync(id, model))
+                .Throws<ArgumentNullException>();
+
+            var result = (BadRequestObjectResult) await _controller.Update(id, model);
+
+            result.StatusCode.Should().Be(400);
+        }
+
+        [Fact]
+        public async Task Update_ThrowsKeyNotFoundException_ReturnsNotFound()
+        {
+            var id = ObjectId.GenerateNewId().ToString();
+            var model = new AnyModel();
+
+            A.CallTo(() => _repository.UpdateAsync(id, model))
+                .Throws<KeyNotFoundException>();
+
+            var result = (NotFoundResult) await _controller.Update(id, model);
+
+            result.StatusCode.Should().Be(404);
         }
 
         [Fact]
@@ -197,7 +247,6 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         [Fact]
         public async Task Delete_DeleteForbidden_ReturnsForbidden()
         {
-            // TODO: Async Read-Only Controller
             // Arrange
             var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             var id = ObjectId.GenerateNewId().ToString();
@@ -209,6 +258,32 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.RemoveAsync(id)).MustNotHaveHappened();
+        }
+        
+        [Fact]
+        public async Task Delete_ThrowsArgumentNullException_ReturnsBadRequest()
+        {
+            var id = ObjectId.GenerateNewId().ToString();
+
+            A.CallTo(() => _repository.RemoveAsync(id))
+                .Throws<ArgumentNullException>();
+
+            var result = (BadRequestObjectResult) await _controller.Delete(id);
+
+            result.StatusCode.Should().Be(400);
+        }
+
+        [Fact]
+        public async Task Delete_ThrowsKeyNotFoundException_ReturnsNotFound()
+        {
+            var id = ObjectId.GenerateNewId().ToString();
+
+            A.CallTo(() => _repository.RemoveAsync(id))
+                .Throws<KeyNotFoundException>();
+
+            var result = (NotFoundResult) await _controller.Delete(id);
+
+            result.StatusCode.Should().Be(404);
         }
     }
 }

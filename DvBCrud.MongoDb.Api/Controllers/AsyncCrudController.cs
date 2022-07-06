@@ -33,13 +33,17 @@ namespace DvBCrud.MongoDB.API.Controllers
         public async Task<IActionResult> Create([FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
-            {
                 return NotAllowed(HttpMethod.Delete.Method);
+
+            try
+            {
+                await Repository.CreateAsync(data);
+                return Ok();
             }
-
-            await Repository.CreateAsync(data);
-
-            return Ok();
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet("{id}")]
@@ -47,13 +51,17 @@ namespace DvBCrud.MongoDB.API.Controllers
         public async Task<ActionResult<TModel>> Read(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
-            {
                 return NotAllowed(HttpMethod.Delete.Method);
+
+            try
+            {
+                var model = await Repository.FindAsync(id);
+                return Ok(model);
             }
-
-            var model = await Repository.FindAsync(id);
-
-            return Ok(model);
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet]
@@ -61,12 +69,9 @@ namespace DvBCrud.MongoDB.API.Controllers
         public async Task<ActionResult<IEnumerable<TModel>>> ReadAll()
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
-            {
                 return NotAllowed(HttpMethod.Delete.Method);
-            }
 
             var models = await Repository.FindAsync();
-
             return Ok(models);
         }
 
@@ -75,13 +80,21 @@ namespace DvBCrud.MongoDB.API.Controllers
         public async Task<IActionResult> Update(string id, [FromBody] TModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
-            {
                 return NotAllowed(HttpMethod.Delete.Method);
+
+            try
+            {
+                await Repository.UpdateAsync(id, data);
+                return Ok();
             }
-
-            await Repository.UpdateAsync(id, data);
-
-            return Ok();
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("{id}")]
@@ -89,13 +102,21 @@ namespace DvBCrud.MongoDB.API.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Delete))
-            {
                 return NotAllowed(HttpMethod.Delete.Method);
+
+            try
+            {
+                await Repository.RemoveAsync(id);
+                return Ok();
             }
-
-            await Repository.RemoveAsync(id);
-
-            return Ok();
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }
