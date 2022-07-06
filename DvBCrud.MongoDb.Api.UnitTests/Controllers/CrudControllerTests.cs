@@ -1,4 +1,6 @@
-﻿using DvBCrud.MongoDB.API.Controllers;
+﻿using System;
+using System.Collections.Generic;
+using DvBCrud.MongoDB.API.Controllers;
 using DvBCrud.MongoDB.API.Mocks.Controllers.Sync;
 using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;
@@ -44,7 +46,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         }
 
         [Fact]
-        public void Read_ReadForbidden_ReturnsForbidden()
+        public void Read_ReadForbidden_ReturnsNotAllowed()
         {
             // Arrange
             var restrictedController = new AnyTestController(_repository);
@@ -57,6 +59,17 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.Find(id)).MustNotHaveHappened();
+        }
+        
+        [Fact]
+        public void Read_ThrowsArgumentNullException_ReturnsBadRequest()
+        {
+            A.CallTo(() => _repository.Find((string)null))
+                .Throws<ArgumentNullException>();
+
+            var result = (BadRequestObjectResult) _controller.Read(null).Result;
+
+            result.StatusCode.Should().Be(400);
         }
 
         [Fact]
@@ -88,7 +101,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         }
 
         [Fact]
-        public void ReadAll_ReadForbidden_ReturnsForbidden()
+        public void ReadAll_ReadForbidden_ReturnsNotAllowed()
         {
             // Arrange
             var restrictedController = new AnyTestController(_repository);
@@ -122,7 +135,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         }
 
         [Fact]
-        public void Create_CreateForbidden_ReturnsForbidden()
+        public void Create_CreateForbidden_ReturnsNotAllowed()
         {
             // Arrange
             var readOnlyController = new AnyReadOnlyController(_repository);
@@ -135,6 +148,19 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.Create(model)).MustNotHaveHappened();
+        }
+
+        [Fact]
+        public void Create_ThrowsArgumentNullException_ReturnsBadRequest()
+        {
+            var model = new AnyModel();
+            
+            A.CallTo(() => _repository.Create(model))
+                .Throws<ArgumentNullException>();
+
+            var result = (BadRequestObjectResult) _controller.Create(model);
+
+            result.StatusCode.Should().Be(400);
         }
 
         [Fact]
@@ -158,7 +184,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         }
 
         [Fact]
-        public void Update_UpdateForbidden_ReturnsForbidden()
+        public void Update_UpdateForbidden_ReturnsNotAllowed()
         {
             // Arrange
             var readOnlyController = new AnyReadOnlyController(_repository);
@@ -172,6 +198,34 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.Update(id, model)).MustNotHaveHappened();
+        }
+
+        [Fact]
+        public void Update_ThrowsArgumentNullException_ReturnsBadRequest()
+        {
+            var id = ObjectId.GenerateNewId().ToString();
+            var model = new AnyModel();
+
+            A.CallTo(() => _repository.Update(id, model))
+                .Throws<ArgumentNullException>();
+
+            var result = (BadRequestObjectResult) _controller.Update(id, model);
+
+            result.StatusCode.Should().Be(400);
+        }
+
+        [Fact]
+        public void Update_ThrowsKeyNotFoundException_ReturnsNotFound()
+        {
+            var id = ObjectId.GenerateNewId().ToString();
+            var model = new AnyModel();
+
+            A.CallTo(() => _repository.Update(id, model))
+                .Throws<KeyNotFoundException>();
+
+            var result = (NotFoundResult) _controller.Update(id, model);
+
+            result.StatusCode.Should().Be(404);
         }
 
         [Fact]
@@ -191,7 +245,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 
 
         [Fact]
-        public void Delete_DeleteForbidden_ReturnsForbidden()
+        public void Delete_DeleteForbidden_ReturnsNotAllowed()
         {
             // Arrange
             var readOnlyController = new AnyReadOnlyController(_repository);
@@ -204,6 +258,32 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
             A.CallTo(() => _repository.Remove(id)).MustNotHaveHappened();
+        }
+        
+        [Fact]
+        public void Delete_ThrowsArgumentNullException_ReturnsBadRequest()
+        {
+            var id = ObjectId.GenerateNewId().ToString();
+
+            A.CallTo(() => _repository.Remove(id))
+                .Throws<ArgumentNullException>();
+
+            var result = (BadRequestObjectResult) _controller.Delete(id);
+
+            result.StatusCode.Should().Be(400);
+        }
+
+        [Fact]
+        public void Delete_ThrowsKeyNotFoundException_ReturnsNotFound()
+        {
+            var id = ObjectId.GenerateNewId().ToString();
+
+            A.CallTo(() => _repository.Remove(id))
+                .Throws<KeyNotFoundException>();
+
+            var result = (NotFoundResult) _controller.Delete(id);
+
+            result.StatusCode.Should().Be(404);
         }
     }
 }

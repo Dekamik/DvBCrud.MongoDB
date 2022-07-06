@@ -70,32 +70,78 @@ namespace DvBCrud.MongoDB.Repositories
                 (await Collection.FindAsync(m => enumerable.Contains(m.Id))).ToEnumerable();
         }
 
-        public virtual void Create(TModel data) => Collection.InsertOne(data);
+        public virtual void Create(TModel data)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            
+            Collection.InsertOne(data);
+        }
 
-        public virtual void Create(IEnumerable<TModel> data) => Collection.InsertMany(data);
+        public virtual void Create(IEnumerable<TModel> data)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            
+            var dataArray = data as TModel[] ?? data.ToArray();
+            
+            if (!dataArray.Any())
+                throw new ArgumentException($"{nameof(data)} collection is empty.");
+            
+            Collection.InsertMany(dataArray);
+        }
 
-        public virtual Task CreateAsync(TModel data) => Collection.InsertOneAsync(data);
+        public virtual Task CreateAsync(TModel data)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            
+            return Collection.InsertOneAsync(data);
+        }
 
-        public virtual Task CreateAsync(IEnumerable<TModel> data) => Collection.InsertManyAsync(data);
+        public virtual Task CreateAsync(IEnumerable<TModel> data)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            
+            var dataArray = data as TModel[] ?? data.ToArray();
+            
+            if (!dataArray.Any())
+                throw new ArgumentException($"{nameof(data)} collection is empty.");
+            
+            return Collection.InsertManyAsync(dataArray);
+        }
 
         public virtual void Update(string id, TModel data)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
 
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
             data.Id = id;
 
-            Collection.ReplaceOne(d => d.Id == id, data);
+            var result = Collection.ReplaceOne(d => d.Id == id, data);
+
+            if (result.MatchedCount == 0 || result.ModifiedCount == 0)
+                throw new KeyNotFoundException($"{typeof(TModel).Name} {id} not found");
         }
 
-        public virtual Task UpdateAsync(string id, TModel data) 
+        public virtual async Task UpdateAsync(string id, TModel data) 
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
 
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
             data.Id = id;
 
-            return Collection.ReplaceOneAsync(d => d.Id == id, data); 
+            var result = await Collection.ReplaceOneAsync(d => d.Id == id, data);
+            
+            if (result.ModifiedCount == 0)
+                throw new KeyNotFoundException($"{typeof(TModel).Name} {id} not found");
         }
 
         public virtual void Remove(string id)
@@ -103,15 +149,21 @@ namespace DvBCrud.MongoDB.Repositories
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
 
-            Collection.DeleteOne(d => d.Id == id);
+            var result = Collection.DeleteOne(d => d.Id == id);
+
+            if (result.DeletedCount == 0)
+                throw new KeyNotFoundException($"{typeof(TModel).Name} {id} not found");
         }
 
-        public virtual Task RemoveAsync(string id)
+        public virtual async Task RemoveAsync(string id)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
 
-            return Collection.DeleteOneAsync(d => d.Id == id);
+            var result = await Collection.DeleteOneAsync(d => d.Id == id);
+            
+            if (result.DeletedCount == 0)
+                throw new KeyNotFoundException($"{typeof(TModel).Name} {id} not found");
         }
     }
 }

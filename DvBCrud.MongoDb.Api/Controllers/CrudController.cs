@@ -36,9 +36,15 @@ namespace DvBCrud.MongoDB.API.Controllers
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
                 return NotAllowed(HttpMethod.Post.Method);;
 
-            Repository.Create(data);
-
-            return Ok();
+            try
+            {
+                Repository.Create(data);
+                return Ok();
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet("{id}")]
@@ -48,9 +54,15 @@ namespace DvBCrud.MongoDB.API.Controllers
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
                 return NotAllowed(HttpMethod.Get.Method);;
 
-            var entity = Repository.Find(id);
-
-            return Ok(entity);
+            try
+            {
+                var entity = Repository.Find(id);
+                return Ok(entity);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet]
@@ -59,9 +71,8 @@ namespace DvBCrud.MongoDB.API.Controllers
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
                 return NotAllowed(HttpMethod.Get.Method);;
-
+            
             var entities = Repository.Find();
-
             return Ok(entities);
         }
 
@@ -72,9 +83,19 @@ namespace DvBCrud.MongoDB.API.Controllers
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
                 return NotAllowed(HttpMethod.Put.Method);;
 
-            Repository.Update(id, data);
-
-            return Ok();
+            try
+            {
+                Repository.Update(id, data);
+                return Ok();
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("{id}")]
@@ -84,9 +105,19 @@ namespace DvBCrud.MongoDB.API.Controllers
             if (!CrudActions.IsActionAllowed(CrudAction.Delete))
                 return NotAllowed(HttpMethod.Delete.Method);
 
-            Repository.Remove(id);
-
-            return Ok();
+            try
+            {
+                Repository.Remove(id);
+                return Ok();
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }
