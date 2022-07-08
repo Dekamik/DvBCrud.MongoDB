@@ -9,7 +9,7 @@ using MongoDB.Driver;
 namespace DvBCrud.MongoDB.Repositories
 {
     public abstract class Repository<TModel> : IRepository<TModel>
-        where TModel : BaseModel
+        where TModel : BaseDataModel
     {
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly IMongoCollectionWrapper<TModel> Collection;

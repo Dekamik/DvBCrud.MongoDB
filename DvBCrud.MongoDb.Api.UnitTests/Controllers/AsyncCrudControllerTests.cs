@@ -28,7 +28,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             // Arrange
             var id = ObjectId.GenerateNewId().ToString();
-            var expected = new AnyModel
+            var expected = new AnyDataModel
             {
                 Id = id,
                 AnyString = "AnyString"
@@ -41,7 +41,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-            var actual = result.Value as AnyModel;
+            var actual = result.Value as AnyDataModel;
             actual.Should().Be(expected);
         }
 
@@ -78,12 +78,12 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Arrange
             var expected = new[]
             {
-                new AnyModel
+                new AnyDataModel
                 {
                     Id = ObjectId.GenerateNewId().ToString(),
                     AnyString = "AnyString"
                 },
-                new AnyModel
+                new AnyDataModel
                 {
                     Id = ObjectId.GenerateNewId().ToString(),
                     AnyString = "AnyString"
@@ -119,7 +119,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         public async Task Create_AnyModel_ModelCreated()
         {
             // Arrange
-            var model = new AnyModel
+            var model = new AnyDataModel
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 AnyString = "AnyString"
@@ -139,7 +139,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             // Arrange
             var readOnlyController = new AnyAsyncReadOnlyController(_repository);
-            var model = new AnyModel();
+            var model = new AnyDataModel();
 
             // Act
             var result = await readOnlyController.Create(model) as ObjectResult;
@@ -153,7 +153,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         [Fact]
         public async Task Create_ThrowsArgumentNullException_ReturnsBadRequest()
         {
-            var model = new AnyModel();
+            var model = new AnyDataModel();
             
             A.CallTo(() => _repository.CreateAsync(model))
                 .Throws<ArgumentNullException>();
@@ -168,7 +168,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             // Arrange
             var id = ObjectId.GenerateNewId().ToString();
-            var model = new AnyModel
+            var model = new AnyDataModel
             {
                 Id = id,
                 AnyString = "AnyString"
@@ -189,7 +189,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Arrange
             var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             var id = ObjectId.GenerateNewId().ToString();
-            var model = new AnyModel();
+            var model = new AnyDataModel();
 
             // Act
             var result = await readOnlyController.Update(id, model) as ObjectResult;
@@ -204,7 +204,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         public async Task Update_ThrowsArgumentNullException_ReturnsBadRequest()
         {
             var id = ObjectId.GenerateNewId().ToString();
-            var model = new AnyModel();
+            var model = new AnyDataModel();
 
             A.CallTo(() => _repository.UpdateAsync(id, model))
                 .Throws<ArgumentNullException>();
@@ -218,7 +218,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         public async Task Update_ThrowsKeyNotFoundException_ReturnsNotFound()
         {
             var id = ObjectId.GenerateNewId().ToString();
-            var model = new AnyModel();
+            var model = new AnyDataModel();
 
             A.CallTo(() => _repository.UpdateAsync(id, model))
                 .Throws<KeyNotFoundException>();

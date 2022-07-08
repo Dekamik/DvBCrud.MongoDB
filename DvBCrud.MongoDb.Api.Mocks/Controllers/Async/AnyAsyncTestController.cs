@@ -6,7 +6,7 @@ using DvBCrud.MongoDB.Mocks.Repositories;
 namespace DvBCrud.MongoDB.API.Mocks.Controllers.Async
 {
     [AllowedActions(CrudAction.Create, CrudAction.Update, CrudAction.Delete)]
-    public class AnyAsyncTestController : AsyncCrudController<AnyModel, IAnyRepository>
+    public class AnyAsyncTestController : AsyncCrudController<AnyDataModel, IAnyRepository>
     {
         public AnyAsyncTestController(IAnyRepository repository) : base(repository)
         {

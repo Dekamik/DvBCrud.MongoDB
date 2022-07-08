@@ -3,7 +3,7 @@ using DvBCrud.MongoDB.Repositories;
 
 namespace DvBCrud.MongoDB.Mocks.Repositories
 {
-    public interface IAnyRepository : IRepository<AnyModel>
+    public interface IAnyRepository : IRepository<AnyDataModel>
     {
     }
 }

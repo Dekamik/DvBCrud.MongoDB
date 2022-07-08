@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace DvBCrud.MongoDB.Models
 {
     [ExcludeFromCodeCoverage]
-    public class BaseModel
+    public class BaseDataModel
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

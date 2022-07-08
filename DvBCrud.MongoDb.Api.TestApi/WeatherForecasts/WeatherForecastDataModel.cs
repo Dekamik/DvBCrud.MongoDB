@@ -3,7 +3,7 @@ using DvBCrud.MongoDB.Models;
 
 namespace DvBCrud.MongoDb.Api.TestApi.WeatherForecasts
 {
-    public class WeatherForecast : BaseModel
+    public class WeatherForecastDataModel : BaseDataModel
     {
         public DateTime Date { get; set; }
 
