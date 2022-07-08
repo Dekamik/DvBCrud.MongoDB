@@ -2,7 +2,7 @@
 
 namespace DvBCrud.MongoDB.Mocks.Models
 {
-    public class AnyModel : BaseModel
+    public class AnyDataModel : BaseDataModel
     {
         public string AnyString { get; set; }
     }

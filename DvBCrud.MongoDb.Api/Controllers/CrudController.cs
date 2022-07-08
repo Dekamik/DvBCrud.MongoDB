@@ -14,7 +14,7 @@ namespace DvBCrud.MongoDB.API.Controllers
     [ApiController]
     [Route("[controller]")]
     public abstract class CrudController<TModel, TRepository> : CrudControllerBase<TModel>
-        where TModel : BaseModel
+        where TModel : BaseDataModel
         where TRepository : IRepository<TModel>
     {
         // ReSharper disable once MemberCanBePrivate.Global

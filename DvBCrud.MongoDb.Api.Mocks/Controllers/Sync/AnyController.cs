@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DvBCrud.MongoDB.API.Mocks.Controllers.Sync
 {
-    public class AnyController : CrudController<AnyModel, IAnyRepository>
+    public class AnyController : CrudController<AnyDataModel, IAnyRepository>
     {
         public AnyController(IAnyRepository repository) : base(repository)
         {

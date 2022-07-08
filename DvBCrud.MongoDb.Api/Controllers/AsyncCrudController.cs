@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DvBCrud.MongoDB.API.Controllers
 {
     public abstract class AsyncCrudController<TModel, TRepository> : CrudControllerBase<TModel>
-        where TModel : BaseModel
+        where TModel : BaseDataModel
         where TRepository : IRepository<TModel>
     {
         // ReSharper disable once MemberCanBePrivate.Global
