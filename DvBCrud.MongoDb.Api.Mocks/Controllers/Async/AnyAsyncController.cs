@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DvBCrud.MongoDB.API.Mocks.Controllers.Async
 {
-    public class AnyAsyncController : AsyncCrudController<AnyModel, IAnyRepository>
+    public class AnyAsyncController : AsyncCrudController<AnyDataModel, IAnyRepository>
     {
         public AnyAsyncController(IAnyRepository repository) : base(repository)
         {

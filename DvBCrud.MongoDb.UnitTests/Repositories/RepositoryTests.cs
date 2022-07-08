@@ -15,15 +15,15 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 {
     public class RepositoryTests
     {
-        private readonly IMongoCollectionWrapper<AnyModel> _collection;
+        private readonly IMongoCollectionWrapper<AnyDataModel> _collection;
         private readonly AnyRepository _repository;
 
         public RepositoryTests()
         {
             var factory = A.Fake<IMongoCollectionWrapperFactory>();
-            _collection = A.Fake<IMongoCollectionWrapper<AnyModel>>();
+            _collection = A.Fake<IMongoCollectionWrapper<AnyDataModel>>();
             
-            A.CallTo(() => factory.Create<AnyModel>())
+            A.CallTo(() => factory.Create<AnyDataModel>())
                 .Returns(_collection);
 
             _repository = new AnyRepository(factory);
@@ -34,7 +34,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         {
             _repository.Find();
 
-            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored))
+            A.CallTo(() => _collection.Find(A<Expression<Func<AnyDataModel, bool>>>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
 
@@ -45,7 +45,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
             _repository.Find(id);
 
-            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored))
+            A.CallTo(() => _collection.Find(A<Expression<Func<AnyDataModel, bool>>>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
 
@@ -60,7 +60,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
             _repository.Find(array);
 
-            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.Find(A<Expression<Func<AnyDataModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
             _repository.Find(array);
 
-            A.CallTo(() => _collection.Find(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.Find(A<Expression<Func<AnyDataModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         {
             await _repository.FindAsync();
 
-            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyDataModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
             await _repository.FindAsync(id);
 
-            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyDataModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
             await _repository.FindAsync(array);
 
-            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyDataModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
 
             await _repository.FindAsync(array);
 
-            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.FindAsync(A<Expression<Func<AnyDataModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         public void Create_One_InsertOneCalled()
         {
             // Arrange
-            var model = new AnyModel
+            var model = new AnyDataModel
             {
                 AnyString = "AnyString"
             };
@@ -176,7 +176,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         [Fact]
         public void Create_OneNull_ThrowsArgumentNullException()
         {
-            _repository.Invoking(r => r.Create((AnyModel)null))
+            _repository.Invoking(r => r.Create((AnyDataModel)null))
                 .Should()
                 .Throw<ArgumentNullException>();
         }
@@ -187,7 +187,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             // Arrange
             var models = new[]
             {
-                new AnyModel
+                new AnyDataModel
                 {
                     AnyString = "AnyString"
                 }
@@ -203,7 +203,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         [Fact]
         public void Create_MultipleNull_ThrowsArgumentNullException()
         {
-            _repository.Invoking(r => r.Create((IEnumerable<AnyModel>)null))
+            _repository.Invoking(r => r.Create((IEnumerable<AnyDataModel>)null))
                 .Should()
                 .Throw<ArgumentNullException>();
         }
@@ -211,7 +211,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         [Fact]
         public void Create_MultipleEmptyCollection_ThrowsArgumentException()
         {
-            _repository.Invoking(r => r.Create(Array.Empty<AnyModel>()))
+            _repository.Invoking(r => r.Create(Array.Empty<AnyDataModel>()))
                 .Should()
                 .Throw<ArgumentException>();
         }
@@ -220,7 +220,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         public void CreateAsync_One_InsertOneCalled()
         {
             // Arrange
-            var model = new AnyModel
+            var model = new AnyDataModel
             {
                 AnyString = "AnyString"
             };
@@ -235,7 +235,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         [Fact]
         public void CreateAsync_OneNull_ThrowsArgumentNullException()
         {
-            _repository.Awaiting(r => r.CreateAsync((AnyModel)null))
+            _repository.Awaiting(r => r.CreateAsync((AnyDataModel)null))
                 .Should()
                 .Throw<ArgumentNullException>();
         }
@@ -246,7 +246,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
             // Arrange
             var models = new[]
             {
-                new AnyModel
+                new AnyDataModel
                 {
                     AnyString = "AnyString"
                 }
@@ -262,7 +262,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         [Fact]
         public void CreateAsync_MultipleNull_ThrowsArgumentNullException()
         {
-            _repository.Awaiting(r => r.CreateAsync((IEnumerable<AnyModel>)null))
+            _repository.Awaiting(r => r.CreateAsync((IEnumerable<AnyDataModel>)null))
                 .Should()
                 .Throw<ArgumentNullException>();
         }
@@ -270,7 +270,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         [Fact]
         public void CreateAsync_MultipleEmptyCollection_ThrowsArgumentException()
         {
-            _repository.Awaiting(r => r.CreateAsync(Array.Empty<AnyModel>()))
+            _repository.Awaiting(r => r.CreateAsync(Array.Empty<AnyDataModel>()))
                 .Should()
                 .Throw<ArgumentException>();
         }
@@ -279,23 +279,23 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         public void Update_Any_ReplaceOneCalled()
         {
             const string id = "AnyId";
-            var model = new AnyModel
+            var model = new AnyDataModel
             {
                 AnyString = "AnyString"
             };
             
-            A.CallTo(() => _collection.ReplaceOne(A<Expression<Func<AnyModel, bool>>>._, model))
+            A.CallTo(() => _collection.ReplaceOne(A<Expression<Func<AnyDataModel, bool>>>._, model))
                 .Returns(new ReplaceOneResult.Acknowledged(1, 1, default));
 
             _repository.Update(id, model);
 
-            A.CallTo(() => _collection.ReplaceOne(A<Expression<Func<AnyModel, bool>>>.Ignored, model)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.ReplaceOne(A<Expression<Func<AnyDataModel, bool>>>.Ignored, model)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
         public void Update_NullId_ThrowsArgumentNullException()
         {
-            _repository.Invoking(r => r.Update(null, new AnyModel()))
+            _repository.Invoking(r => r.Update(null, new AnyDataModel()))
                 .Should()
                 .Throw<ArgumentNullException>();
         }
@@ -312,12 +312,12 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         public void Update_NotFoundInDatabase_ThrowsKeyNotFoundException()
         {
             const string id = "AnyId";
-            var model = new AnyModel
+            var model = new AnyDataModel
             {
                 AnyString = "AnyString"
             };
             
-            A.CallTo(() => _collection.ReplaceOne(A<Expression<Func<AnyModel, bool>>>._, model))
+            A.CallTo(() => _collection.ReplaceOne(A<Expression<Func<AnyDataModel, bool>>>._, model))
                 .Returns(new ReplaceOneResult.Acknowledged(0, 0, default));
 
             _repository.Invoking(r => r.Update(id, model))
@@ -329,23 +329,23 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         public async Task UpdateAsync_Any_ReplaceOneAsyncCalled()
         {
             const string id = "AnyId";
-            var model = new AnyModel
+            var model = new AnyDataModel
             {
                 AnyString = "AnyString"
             };
             
-            A.CallTo(() => _collection.ReplaceOneAsync(A<Expression<Func<AnyModel, bool>>>._, model))
+            A.CallTo(() => _collection.ReplaceOneAsync(A<Expression<Func<AnyDataModel, bool>>>._, model))
                 .Returns(new ReplaceOneResult.Acknowledged(1, 1, default));
 
             await _repository.UpdateAsync(id, model);
 
-            A.CallTo(() => _collection.ReplaceOneAsync(A<Expression<Func<AnyModel, bool>>>.Ignored, model)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.ReplaceOneAsync(A<Expression<Func<AnyDataModel, bool>>>.Ignored, model)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
         public void UpdateAsync_NullId_ThrowsArgumentNullException()
         {
-            _repository.Awaiting(r => r.UpdateAsync(null, new AnyModel())).Should().Throw<ArgumentNullException>();
+            _repository.Awaiting(r => r.UpdateAsync(null, new AnyDataModel())).Should().Throw<ArgumentNullException>();
         }
         
         [Fact]
@@ -358,12 +358,12 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         public void UpdateAsync_NotFoundInDatabase_ThrowsKeyNotFoundException()
         {
             const string id = "AnyId";
-            var model = new AnyModel
+            var model = new AnyDataModel
             {
                 AnyString = "AnyString"
             };
             
-            A.CallTo(() => _collection.ReplaceOneAsync(A<Expression<Func<AnyModel, bool>>>._, model))
+            A.CallTo(() => _collection.ReplaceOneAsync(A<Expression<Func<AnyDataModel, bool>>>._, model))
                 .Returns(new ReplaceOneResult.Acknowledged(0, 0, default));
 
             _repository.Awaiting(r => r.UpdateAsync(id, model))
@@ -376,12 +376,12 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         {
             const string id = "AnyId";
 
-            A.CallTo(() => _collection.DeleteOne(A<Expression<Func<AnyModel, bool>>>._))
+            A.CallTo(() => _collection.DeleteOne(A<Expression<Func<AnyDataModel, bool>>>._))
                 .Returns(new DeleteResult.Acknowledged(1));
 
             _repository.Remove(id);
 
-            A.CallTo(() => _collection.DeleteOne(A<Expression<Func<AnyModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _collection.DeleteOne(A<Expression<Func<AnyDataModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -395,7 +395,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         [Fact]
         public void Remove_NotFoundInDatabase_ThrowsKeyNotFoundException()
         {
-            A.CallTo(() => _collection.DeleteOne(A<Expression<Func<AnyModel, bool>>>._))
+            A.CallTo(() => _collection.DeleteOne(A<Expression<Func<AnyDataModel, bool>>>._))
                 .Returns(new DeleteResult.Acknowledged(0));
 
             _repository.Invoking(r => r.Remove("AnyId"))
@@ -408,12 +408,12 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         {
             const string id = "AnyId";
             
-            A.CallTo(() => _collection.DeleteOneAsync(A<Expression<Func<AnyModel, bool>>>._))
+            A.CallTo(() => _collection.DeleteOneAsync(A<Expression<Func<AnyDataModel, bool>>>._))
                 .Returns(new DeleteResult.Acknowledged(1));
 
             await _repository.RemoveAsync(id);
 
-            A.CallTo(() => _collection.DeleteOneAsync(A<Expression<Func<AnyModel, bool>>>.Ignored))
+            A.CallTo(() => _collection.DeleteOneAsync(A<Expression<Func<AnyDataModel, bool>>>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
 
@@ -428,7 +428,7 @@ namespace DvBCrud.MongoDB.Tests.Repositories
         [Fact]
         public void RemoveAsync_NotFoundInDatabase_ThrowsKeyNotFoundException()
         {
-            A.CallTo(() => _collection.DeleteOneAsync(A<Expression<Func<AnyModel, bool>>>._))
+            A.CallTo(() => _collection.DeleteOneAsync(A<Expression<Func<AnyDataModel, bool>>>._))
                 .Returns(new DeleteResult.Acknowledged(0));
 
             _repository.Awaiting(r => r.RemoveAsync("AnyId"))
