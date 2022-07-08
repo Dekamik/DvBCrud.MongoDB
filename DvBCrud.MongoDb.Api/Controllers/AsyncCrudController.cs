@@ -6,39 +6,37 @@ using System.Threading.Tasks;
 using DvBCrud.Common.Api.Controllers;
 using DvBCrud.Common.Api.CrudActions;
 using DvBCrud.Common.Api.Swagger;
-using DvBCrud.MongoDB.Models;
-using DvBCrud.MongoDB.Repositories;
+using DvBCrud.MongoDb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DvBCrud.MongoDB.API.Controllers
 {
-    public abstract class AsyncCrudController<TModel, TRepository> : CrudControllerBase<TModel>
-        where TModel : BaseDataModel
-        where TRepository : IRepository<TModel>
+    public abstract class AsyncCrudController<TApiModel, TService> : CrudControllerBase<TApiModel>
+        where TService : IService<TApiModel>
     {
         // ReSharper disable once MemberCanBePrivate.Global
-        protected readonly TRepository Repository;
+        protected readonly TService Service;
 
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly CrudAction[] CrudActions;
 
-        protected AsyncCrudController(TRepository repository)
+        protected AsyncCrudController(TService service)
         {
-            Repository = repository;
+            Service = service;
             CrudActions = GetType().GetCustomAttribute<AllowedActionsAttribute>()?.AllowedActions ?? 
                           Array.Empty<CrudAction>();
         }
 
         [HttpPost]
         [SwaggerDocsFilter(CrudAction.Create)]
-        public async Task<IActionResult> Create([FromBody] TModel data)
+        public async Task<IActionResult> Create([FromBody] TApiModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
                 return NotAllowed(HttpMethod.Delete.Method);
 
             try
             {
-                await Repository.CreateAsync(data);
+                await Service.CreateAsync(data);
                 return Ok();
             }
             catch (ArgumentNullException ex)
@@ -49,14 +47,14 @@ namespace DvBCrud.MongoDB.API.Controllers
 
         [HttpGet("{id}")]
         [SwaggerDocsFilter(CrudAction.Read)]
-        public async Task<ActionResult<TModel>> Read(string id)
+        public async Task<ActionResult<TApiModel>> Read(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
                 return NotAllowed(HttpMethod.Delete.Method);
 
             try
             {
-                var model = await Repository.FindAsync(id);
+                var model = await Service.GetAsync(id);
                 return Ok(model);
             }
             catch (ArgumentNullException ex)
@@ -67,25 +65,25 @@ namespace DvBCrud.MongoDB.API.Controllers
 
         [HttpGet]
         [SwaggerDocsFilter(CrudAction.Read)]
-        public async Task<ActionResult<IEnumerable<TModel>>> ReadAll()
+        public async Task<ActionResult<IEnumerable<TApiModel>>> ReadAll()
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
                 return NotAllowed(HttpMethod.Delete.Method);
 
-            var models = await Repository.FindAsync();
+            var models = await Service.GetAllAsync();
             return Ok(models);
         }
 
         [HttpPut("{id}")]
         [SwaggerDocsFilter(CrudAction.Update)]
-        public async Task<IActionResult> Update(string id, [FromBody] TModel data)
+        public async Task<IActionResult> Update(string id, [FromBody] TApiModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
                 return NotAllowed(HttpMethod.Delete.Method);
 
             try
             {
-                await Repository.UpdateAsync(id, data);
+                await Service.UpdateAsync(id, data);
                 return Ok();
             }
             catch (ArgumentNullException ex)
@@ -107,7 +105,7 @@ namespace DvBCrud.MongoDB.API.Controllers
 
             try
             {
-                await Repository.RemoveAsync(id);
+                await Service.DeleteAsync(id);
                 return Ok();
             }
             catch (ArgumentNullException ex)

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DvBCrud.MongoDb\DvBCrud.MongoDb.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DvBCrud.Common.Services" Version="1.1.0-rc.1" />
+    </ItemGroup>
+
+</Project>
