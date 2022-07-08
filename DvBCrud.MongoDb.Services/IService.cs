@@ -3,6 +3,7 @@
 public interface IService<TApiModel>
 {
     IEnumerable<TApiModel> GetAll();
+    Task<IEnumerable<TApiModel>> GetAllAsync();
     TApiModel? Get(string id);
     Task<TApiModel?> GetAsync(string id);
     void Create(TApiModel apiModel);

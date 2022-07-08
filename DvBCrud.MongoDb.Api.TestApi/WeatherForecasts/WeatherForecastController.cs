@@ -2,9 +2,9 @@ using DvBCrud.MongoDB.API.Controllers;
 
 namespace DvBCrud.MongoDb.Api.TestApi.WeatherForecasts
 {
-    public class WeatherForecastController : CrudController<WeatherForecastDataModel, WeatherForecastRepository>
+    public class WeatherForecastController : CrudController<WeatherForecastDataModel, WeatherForecastService>
     {
-        public WeatherForecastController(WeatherForecastRepository repository) : base(repository)
+        public WeatherForecastController(WeatherForecastService service) : base(service)
         {
         }
     }

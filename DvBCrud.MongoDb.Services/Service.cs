@@ -21,6 +21,10 @@ public abstract class Service<TDataModel, TRepository, TApiModel, TConverter> : 
         Repository.Find()
             .Select(Converter.ToApiModel);
 
+    public virtual async Task<IEnumerable<TApiModel>> GetAllAsync() =>
+        (await Repository.FindAsync())
+            .Select(Converter.ToApiModel);
+
     public virtual TApiModel? Get(string id)
     {
         var dataModel = Repository.Find(id);

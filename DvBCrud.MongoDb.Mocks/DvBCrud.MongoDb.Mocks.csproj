@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DvBCrud.MongoDb.Api\DvBCrud.MongoDb.Api.csproj" />
+    <ProjectReference Include="..\DvBCrud.MongoDb.Services\DvBCrud.MongoDb.Services.csproj" />
     <ProjectReference Include="..\DvBCrud.MongoDb\DvBCrud.MongoDb.csproj" />
   </ItemGroup>
 

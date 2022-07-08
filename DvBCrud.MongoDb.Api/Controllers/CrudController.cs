@@ -5,41 +5,39 @@ using System.Reflection;
 using DvBCrud.Common.Api.Controllers;
 using DvBCrud.Common.Api.CrudActions;
 using DvBCrud.Common.Api.Swagger;
-using DvBCrud.MongoDB.Models;
-using DvBCrud.MongoDB.Repositories;
+using DvBCrud.MongoDb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DvBCrud.MongoDB.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public abstract class CrudController<TModel, TRepository> : CrudControllerBase<TModel>
-        where TModel : BaseDataModel
-        where TRepository : IRepository<TModel>
+    public abstract class CrudController<TApiModel, TService> : CrudControllerBase<TApiModel>
+        where TService : IService<TApiModel>
     {
         // ReSharper disable once MemberCanBePrivate.Global
-        protected readonly TRepository Repository;
+        protected readonly TService Service;
 
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly CrudAction[] CrudActions;
 
-        protected CrudController(TRepository repository)
+        protected CrudController(TService service)
         {
-            Repository = repository;
+            Service = service;
             CrudActions = GetType().GetCustomAttribute<AllowedActionsAttribute>()?.AllowedActions ?? 
                           Array.Empty<CrudAction>();
         }
 
         [HttpPost]
         [SwaggerDocsFilter(CrudAction.Create)]
-        public virtual IActionResult Create([FromBody] TModel data)
+        public virtual IActionResult Create([FromBody] TApiModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Create))
                 return NotAllowed(HttpMethod.Post.Method);
 
             try
             {
-                Repository.Create(data);
+                Service.Create(data);
                 return Ok();
             }
             catch (ArgumentNullException ex)
@@ -50,14 +48,14 @@ namespace DvBCrud.MongoDB.API.Controllers
 
         [HttpGet("{id}")]
         [SwaggerDocsFilter(CrudAction.Read)]
-        public virtual ActionResult<TModel> Read(string id)
+        public virtual ActionResult<TApiModel> Read(string id)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
                 return NotAllowed(HttpMethod.Get.Method);
 
             try
             {
-                var entity = Repository.Find(id);
+                var entity = Service.Get(id);
                 return Ok(entity);
             }
             catch (ArgumentNullException ex)
@@ -68,25 +66,25 @@ namespace DvBCrud.MongoDB.API.Controllers
 
         [HttpGet]
         [SwaggerDocsFilter(CrudAction.Read)]
-        public virtual ActionResult<IEnumerable<TModel>> ReadAll()
+        public virtual ActionResult<IEnumerable<TApiModel>> ReadAll()
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Read))
                 return NotAllowed(HttpMethod.Get.Method);
             
-            var entities = Repository.Find();
+            var entities = Service.GetAll();
             return Ok(entities);
         }
 
         [HttpPut("{id}")]
         [SwaggerDocsFilter(CrudAction.Update)]
-        public virtual IActionResult Update(string id, [FromBody] TModel data)
+        public virtual IActionResult Update(string id, [FromBody] TApiModel data)
         {
             if (!CrudActions.IsActionAllowed(CrudAction.Update))
                 return NotAllowed(HttpMethod.Put.Method);
 
             try
             {
-                Repository.Update(id, data);
+                Service.Update(id, data);
                 return Ok();
             }
             catch (ArgumentNullException ex)
@@ -108,7 +106,7 @@ namespace DvBCrud.MongoDB.API.Controllers
 
             try
             {
-                Repository.Remove(id);
+                Service.Delete(id);
                 return Ok();
             }
             catch (ArgumentNullException ex)

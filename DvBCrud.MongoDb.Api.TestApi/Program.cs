@@ -16,6 +16,8 @@ builder.Services.AddScoped<IMongoCollectionWrapperFactory>(x =>
         x.GetRequiredService<IMongoClient>(), 
         databaseName));
 builder.Services.AddScoped<WeatherForecastRepository>();
+builder.Services.AddScoped<WeatherForecastConverter>();
+builder.Services.AddScoped<WeatherForecastService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

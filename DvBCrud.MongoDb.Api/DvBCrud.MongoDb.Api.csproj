@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DvBCrud.MongoDb.Services\DvBCrud.MongoDb.Services.csproj" />
     <ProjectReference Include="..\DvBCrud.MongoDb\DvBCrud.MongoDb.csproj" />
   </ItemGroup>
 

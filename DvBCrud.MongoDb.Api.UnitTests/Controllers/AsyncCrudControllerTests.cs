@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DvBCrud.MongoDB.API.Mocks.Controllers.Async;
+using DvBCrud.MongoDB.Mocks.Controllers.Async;
 using DvBCrud.MongoDB.Mocks.Models;
 using DvBCrud.MongoDB.Mocks.Repositories;
+using DvBCrud.MongoDB.Mocks.Services;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,12 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
 {
     public class AsyncCrudControllerTests
     {
-        private readonly IAnyRepository _repository;
+        private readonly IAnyService _repository;
         private readonly AnyAsyncController _controller;
 
         public AsyncCrudControllerTests()
         {
-            _repository = A.Fake<IAnyRepository>();
+            _repository = A.Fake<IAnyService>();
             _controller = new AnyAsyncController(_repository);
         }
 
@@ -28,12 +29,11 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             // Arrange
             var id = ObjectId.GenerateNewId().ToString();
-            var expected = new AnyDataModel
+            var expected = new AnyApiModel
             {
-                Id = id,
                 AnyString = "AnyString"
             };
-            A.CallTo(() => _repository.FindAsync(id)).Returns(expected);
+            A.CallTo(() => _repository.GetAsync(id)).Returns(expected);
 
             // Act
             var result = (await _controller.Read(id)).Result as OkObjectResult;
@@ -41,7 +41,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-            var actual = result.Value as AnyDataModel;
+            var actual = result.Value as AnyApiModel;
             actual.Should().Be(expected);
         }
 
@@ -58,13 +58,13 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
-            A.CallTo(() => _repository.FindAsync(id)).MustNotHaveHappened();
+            A.CallTo(() => _repository.GetAsync(id)).MustNotHaveHappened();
         }
         
         [Fact]
         public async Task Read_ThrowsArgumentNullException_ReturnsBadRequest()
         {
-            A.CallTo(() => _repository.FindAsync((string)null))
+            A.CallTo(() => _repository.GetAsync((string)null))
                 .Throws<ArgumentNullException>();
 
             var result = (BadRequestObjectResult) (await _controller.Read(null)).Result;
@@ -78,18 +78,16 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Arrange
             var expected = new[]
             {
-                new AnyDataModel
+                new AnyApiModel
                 {
-                    Id = ObjectId.GenerateNewId().ToString(),
                     AnyString = "AnyString"
                 },
-                new AnyDataModel
+                new AnyApiModel
                 {
-                    Id = ObjectId.GenerateNewId().ToString(),
                     AnyString = "AnyString"
                 }
             };
-            A.CallTo(() => _repository.FindAsync()).Returns(expected);
+            A.CallTo(() => _repository.GetAllAsync()).Returns(expected);
 
             // Act
             var result = (await _controller.ReadAll()).Result as OkObjectResult;
@@ -112,16 +110,15 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
-            A.CallTo(() => _repository.FindAsync()).MustNotHaveHappened();
+            A.CallTo(() => _repository.GetAllAsync()).MustNotHaveHappened();
         }
 
         [Fact]
         public async Task Create_AnyModel_ModelCreated()
         {
             // Arrange
-            var model = new AnyDataModel
+            var model = new AnyApiModel
             {
-                Id = ObjectId.GenerateNewId().ToString(),
                 AnyString = "AnyString"
             };
 
@@ -139,7 +136,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             // Arrange
             var readOnlyController = new AnyAsyncReadOnlyController(_repository);
-            var model = new AnyDataModel();
+            var model = new AnyApiModel();
 
             // Act
             var result = await readOnlyController.Create(model) as ObjectResult;
@@ -153,7 +150,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         [Fact]
         public async Task Create_ThrowsArgumentNullException_ReturnsBadRequest()
         {
-            var model = new AnyDataModel();
+            var model = new AnyApiModel();
             
             A.CallTo(() => _repository.CreateAsync(model))
                 .Throws<ArgumentNullException>();
@@ -168,9 +165,8 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             // Arrange
             var id = ObjectId.GenerateNewId().ToString();
-            var model = new AnyDataModel
+            var model = new AnyApiModel
             {
-                Id = id,
                 AnyString = "AnyString"
             };
 
@@ -189,7 +185,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Arrange
             var readOnlyController = new AnyAsyncReadOnlyController(_repository);
             var id = ObjectId.GenerateNewId().ToString();
-            var model = new AnyDataModel();
+            var model = new AnyApiModel();
 
             // Act
             var result = await readOnlyController.Update(id, model) as ObjectResult;
@@ -204,7 +200,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         public async Task Update_ThrowsArgumentNullException_ReturnsBadRequest()
         {
             var id = ObjectId.GenerateNewId().ToString();
-            var model = new AnyDataModel();
+            var model = new AnyApiModel();
 
             A.CallTo(() => _repository.UpdateAsync(id, model))
                 .Throws<ArgumentNullException>();
@@ -218,7 +214,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         public async Task Update_ThrowsKeyNotFoundException_ReturnsNotFound()
         {
             var id = ObjectId.GenerateNewId().ToString();
-            var model = new AnyDataModel();
+            var model = new AnyApiModel();
 
             A.CallTo(() => _repository.UpdateAsync(id, model))
                 .Throws<KeyNotFoundException>();
@@ -240,7 +236,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-            A.CallTo(() => _repository.RemoveAsync(id)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _repository.DeleteAsync(id)).MustHaveHappenedOnceExactly();
         }
 
 
@@ -257,7 +253,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(405);
-            A.CallTo(() => _repository.RemoveAsync(id)).MustNotHaveHappened();
+            A.CallTo(() => _repository.DeleteAsync(id)).MustNotHaveHappened();
         }
         
         [Fact]
@@ -265,7 +261,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             var id = ObjectId.GenerateNewId().ToString();
 
-            A.CallTo(() => _repository.RemoveAsync(id))
+            A.CallTo(() => _repository.DeleteAsync(id))
                 .Throws<ArgumentNullException>();
 
             var result = (BadRequestObjectResult) await _controller.Delete(id);
@@ -278,7 +274,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
         {
             var id = ObjectId.GenerateNewId().ToString();
 
-            A.CallTo(() => _repository.RemoveAsync(id))
+            A.CallTo(() => _repository.DeleteAsync(id))
                 .Throws<KeyNotFoundException>();
 
             var result = (NotFoundResult) await _controller.Delete(id);
