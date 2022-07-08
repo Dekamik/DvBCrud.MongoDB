@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DvBCrud.MongoDb.Api.Mocks",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DvBCrud.MongoDb.Api.TestApi", "DvBCrud.MongoDb.Api.TestApi\DvBCrud.MongoDb.Api.TestApi.csproj", "{0AB52A12-65A4-4DF8-A16E-64044A8FEF86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DvBCrud.MongoDb.Services", "DvBCrud.MongoDb.Services\DvBCrud.MongoDb.Services.csproj", "{91E239D5-F25D-48D3-97FB-A8611C2D2250}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{0AB52A12-65A4-4DF8-A16E-64044A8FEF86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AB52A12-65A4-4DF8-A16E-64044A8FEF86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AB52A12-65A4-4DF8-A16E-64044A8FEF86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91E239D5-F25D-48D3-97FB-A8611C2D2250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91E239D5-F25D-48D3-97FB-A8611C2D2250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91E239D5-F25D-48D3-97FB-A8611C2D2250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91E239D5-F25D-48D3-97FB-A8611C2D2250}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
