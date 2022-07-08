@@ -16,7 +16,7 @@ namespace DvBCrud.MongoDB.API.UnitTests.Controllers
     public class CrudControllerTests
     {
         private readonly IAnyService _repository;
-        private readonly CrudController<AnyApiModel, IAnyService> _controller;
+        private readonly AnyController _controller;
 
         public CrudControllerTests()
         {
