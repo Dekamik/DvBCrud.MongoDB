@@ -9,7 +9,7 @@ using DvBCrud.Common.Api.Swagger;
 using DvBCrud.MongoDb.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DvBCrud.MongoDB.API.Controllers
+namespace DvBCrud.MongoDb.Api.Controllers
 {
     public abstract class AsyncCrudController<TApiModel, TService> : CrudControllerBase<TApiModel>
         where TService : IService<TApiModel>

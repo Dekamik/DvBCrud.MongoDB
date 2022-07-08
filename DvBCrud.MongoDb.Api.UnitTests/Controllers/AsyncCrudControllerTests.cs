@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DvBCrud.MongoDB.Mocks.Controllers.Async;
-using DvBCrud.MongoDB.Mocks.Models;
-using DvBCrud.MongoDB.Mocks.Repositories;
-using DvBCrud.MongoDB.Mocks.Services;
+using DvBCrud.MongoDb.Mocks.Controllers.Async;
+using DvBCrud.MongoDb.Mocks.Models;
+using DvBCrud.MongoDb.Mocks.Repositories;
+using DvBCrud.MongoDb.Mocks.Services;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using Xunit;
 
-namespace DvBCrud.MongoDB.API.UnitTests.Controllers
+namespace DvBCrud.MongoDb.Api.UnitTests.Controllers
 {
     public class AsyncCrudControllerTests
     {

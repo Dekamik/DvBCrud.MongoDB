@@ -1,7 +1,7 @@
 ﻿using DvBCrud.Common.Services.Conversion;
-using DvBCrud.MongoDB.Mocks.Models;
+using DvBCrud.MongoDb.Mocks.Models;
 
-namespace DvBCrud.MongoDB.Mocks.Services;
+namespace DvBCrud.MongoDb.Mocks.Services;
 
 public interface IAnyConverter : IConverter<AnyDataModel, AnyApiModel>
 {

@@ -1,6 +1,6 @@
-﻿using DvBCrud.MongoDB.Models;
+﻿using DvBCrud.MongoDb.Models;
 
-namespace DvBCrud.MongoDB.Mocks.Models
+namespace DvBCrud.MongoDb.Mocks.Models
 {
     public class AnyDataModel : BaseDataModel
     {

@@ -1,4 +1,4 @@
-using DvBCrud.MongoDB.API.Controllers;
+using DvBCrud.MongoDb.Api.Controllers;
 
 namespace DvBCrud.MongoDb.Api.TestApi.WeatherForecasts
 {

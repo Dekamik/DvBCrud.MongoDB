@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDB.Repositories.Wrappers
+namespace DvBCrud.MongoDb.Repositories.Wrappers
 {
     [ExcludeFromCodeCoverage]
     public class MongoCollectionWrapperFactory : IMongoCollectionWrapperFactory

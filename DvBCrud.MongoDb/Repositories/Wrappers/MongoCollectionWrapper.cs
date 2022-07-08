@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDB.Repositories.Wrappers
+namespace DvBCrud.MongoDb.Repositories.Wrappers
 {
     [ExcludeFromCodeCoverage]
     public class MongoCollectionWrapper<TModel> : IMongoCollectionWrapper<TModel>

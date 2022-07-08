@@ -1,7 +1,7 @@
-﻿using DvBCrud.MongoDB.Mocks.Models;
-using DvBCrud.MongoDB.Repositories;
+﻿using DvBCrud.MongoDb.Mocks.Models;
+using DvBCrud.MongoDb.Repositories;
 
-namespace DvBCrud.MongoDB.Mocks.Repositories
+namespace DvBCrud.MongoDb.Mocks.Repositories
 {
     public interface IAnyRepository : IRepository<AnyDataModel>
     {

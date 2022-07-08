@@ -1,7 +1,7 @@
-using DvBCrud.MongoDB.Mocks.Models;
+using DvBCrud.MongoDb.Mocks.Models;
 using DvBCrud.MongoDb.Services;
 
-namespace DvBCrud.MongoDB.Mocks.Services;
+namespace DvBCrud.MongoDb.Mocks.Services;
 
 public interface IAnyService : IService<AnyApiModel>
 {

@@ -8,7 +8,7 @@ using DvBCrud.Common.Api.Swagger;
 using DvBCrud.MongoDb.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DvBCrud.MongoDB.API.Controllers
+namespace DvBCrud.MongoDb.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]

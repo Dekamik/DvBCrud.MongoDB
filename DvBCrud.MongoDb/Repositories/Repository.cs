@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DvBCrud.MongoDB.Models;
-using DvBCrud.MongoDB.Repositories.Wrappers;
+using DvBCrud.MongoDb.Models;
+using DvBCrud.MongoDb.Repositories.Wrappers;
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDB.Repositories
+namespace DvBCrud.MongoDb.Repositories
 {
     public abstract class Repository<TModel> : IRepository<TModel>
         where TModel : BaseDataModel

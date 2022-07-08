@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DvBCrud.MongoDB.Models
+namespace DvBCrud.MongoDb.Models
 {
     [ExcludeFromCodeCoverage]
     public class BaseDataModel

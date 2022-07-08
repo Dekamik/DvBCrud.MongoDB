@@ -1,5 +1,5 @@
 using System;
-using DvBCrud.MongoDB.Models;
+using DvBCrud.MongoDb.Models;
 
 namespace DvBCrud.MongoDb.Api.TestApi.WeatherForecasts
 {

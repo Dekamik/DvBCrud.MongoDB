@@ -1,4 +1,4 @@
-﻿namespace DvBCrud.MongoDB.Mocks.Models;
+﻿namespace DvBCrud.MongoDb.Mocks.Models;
 
 public class AnyApiModel
 {

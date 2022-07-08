@@ -1,9 +1,9 @@
-﻿using DvBCrud.MongoDB.Mocks.Models;
-using DvBCrud.MongoDB.Repositories;
-using DvBCrud.MongoDB.Repositories.Wrappers;
+﻿using DvBCrud.MongoDb.Mocks.Models;
+using DvBCrud.MongoDb.Repositories;
+using DvBCrud.MongoDb.Repositories.Wrappers;
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDB.Mocks.Repositories
+namespace DvBCrud.MongoDb.Mocks.Repositories
 {
     public class AnyRepository : Repository<AnyDataModel>, IAnyRepository
     {

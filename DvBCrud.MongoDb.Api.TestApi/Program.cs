@@ -1,7 +1,7 @@
 using DvBCrud.MongoDb.Api.TestApi;
 using DvBCrud.MongoDb.Api.TestApi.WeatherForecasts;
-using DvBCrud.MongoDB.Helpers;
-using DvBCrud.MongoDB.Repositories.Wrappers;
+using DvBCrud.MongoDb.Helpers;
+using DvBCrud.MongoDb.Repositories.Wrappers;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,6 +1,6 @@
-﻿using DvBCrud.MongoDB.Mocks.Models;
+﻿using DvBCrud.MongoDb.Mocks.Models;
 
-namespace DvBCrud.MongoDB.Mocks.Services;
+namespace DvBCrud.MongoDb.Mocks.Services;
 
 public class AnyConverter : IAnyConverter
 {

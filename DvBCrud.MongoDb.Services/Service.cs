@@ -1,6 +1,6 @@
 ﻿using DvBCrud.Common.Services.Conversion;
-using DvBCrud.MongoDB.Models;
-using DvBCrud.MongoDB.Repositories;
+using DvBCrud.MongoDb.Models;
+using DvBCrud.MongoDb.Repositories;
 
 namespace DvBCrud.MongoDb.Services;
 

@@ -1,8 +1,8 @@
-﻿using DvBCrud.MongoDB.Mocks.Models;
-using DvBCrud.MongoDB.Mocks.Repositories;
+﻿using DvBCrud.MongoDb.Mocks.Models;
+using DvBCrud.MongoDb.Mocks.Repositories;
 using DvBCrud.MongoDb.Services;
 
-namespace DvBCrud.MongoDB.Mocks.Services;
+namespace DvBCrud.MongoDb.Mocks.Services;
 
 public class AnyService : Service<AnyDataModel, IAnyRepository, AnyApiModel, IAnyConverter>, IAnyService
 {

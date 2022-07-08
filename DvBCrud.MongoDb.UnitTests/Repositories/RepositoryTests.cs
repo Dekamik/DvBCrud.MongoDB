@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using DvBCrud.MongoDB.Mocks.Models;
-using DvBCrud.MongoDB.Mocks.Repositories;
-using DvBCrud.MongoDB.Repositories.Wrappers;
+using DvBCrud.MongoDb.Mocks.Models;
+using DvBCrud.MongoDb.Mocks.Repositories;
+using DvBCrud.MongoDb.Repositories.Wrappers;
 using FakeItEasy;
 using FluentAssertions;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Xunit;
 
-namespace DvBCrud.MongoDB.Tests.Repositories
+namespace DvBCrud.MongoDb.Tests.Repositories
 {
     public class RepositoryTests
     {

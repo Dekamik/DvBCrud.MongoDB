@@ -1,9 +1,9 @@
 ﻿using DvBCrud.Common.Api.CrudActions;
-using DvBCrud.MongoDB.API.Controllers;
-using DvBCrud.MongoDB.Mocks.Models;
-using DvBCrud.MongoDB.Mocks.Services;
+using DvBCrud.MongoDb.Api.Controllers;
+using DvBCrud.MongoDb.Mocks.Models;
+using DvBCrud.MongoDb.Mocks.Services;
 
-namespace DvBCrud.MongoDB.Mocks.Controllers.Async
+namespace DvBCrud.MongoDb.Mocks.Controllers.Async
 {
     [AllowedActions(CrudAction.Read)]
     public class AnyAsyncReadOnlyController : AsyncCrudController<AnyApiModel, IAnyService>

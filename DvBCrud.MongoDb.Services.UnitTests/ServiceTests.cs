@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using DvBCrud.MongoDB.Mocks.Models;
-using DvBCrud.MongoDB.Mocks.Repositories;
-using DvBCrud.MongoDB.Mocks.Services;
+using DvBCrud.MongoDb.Mocks.Models;
+using DvBCrud.MongoDb.Mocks.Repositories;
+using DvBCrud.MongoDb.Mocks.Services;
 using FakeItEasy;
 using FluentAssertions;
 using Xunit;

@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace DvBCrud.MongoDB.Repositories.Wrappers
+namespace DvBCrud.MongoDb.Repositories.Wrappers
 {
     public interface IMongoCollectionWrapperFactory
     {
