@@ -27,12 +27,18 @@ public abstract class Service<TDataModel, TRepository, TApiModel, TConverter> : 
 
     public virtual TApiModel? Get(string id)
     {
+        if (id == null)
+            throw new ArgumentNullException(nameof(id));
+        
         var dataModel = Repository.Find(id);
         return Converter.ToApiModel(dataModel);
     }
 
     public virtual async Task<TApiModel?> GetAsync(string id)
     {
+        if (id == null)
+            throw new ArgumentNullException(nameof(id));
+        
         var dataModel = await Repository.FindAsync(id);
         return Converter.ToApiModel(dataModel);
     }

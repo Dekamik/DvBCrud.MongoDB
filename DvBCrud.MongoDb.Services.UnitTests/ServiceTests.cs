@@ -149,6 +149,14 @@ public class ServiceTests
     }
 
     [Fact]
+    public void Get_NullId_ThrowsArgumentNullException()
+    {
+        _service.Invoking(x => x.Get(null))
+            .Should()
+            .Throw<ArgumentNullException>();
+    }
+
+    [Fact]
     public async Task GetAsync_Any_CallsFindAsyncWithIdAndConverter()
     {
         const string id = "AnyId";
@@ -163,6 +171,14 @@ public class ServiceTests
         var actual = await _service.GetAsync(id);
 
         actual.Should().Be(apiModel);
+    }
+
+    [Fact]
+    public void GetAsync_NullId_ThrowsArgumentNullException()
+    {
+        _service.Awaiting(x => x.GetAsync(null))
+            .Should()
+            .Throw<ArgumentNullException>();
     }
 
     [Fact]
