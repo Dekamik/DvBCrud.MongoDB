@@ -1,3 +1,6 @@
+# This repository is deprecated
+# Please refer to the [DvBCrud](https://github.com/Dekamik/DvBCrud) repository
+
 # DvBCrud.MongoDB
 ![Test Status](https://github.com/Dekamik/DvBCrud.MongoDb/actions/workflows/test.yml/badge.svg)
 ![Build Status](https://github.com/Dekamik/DvBCrud.MongoDb/actions/workflows/release.yml/badge.svg)
